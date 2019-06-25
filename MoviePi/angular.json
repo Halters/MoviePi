@@ -195,6 +195,38 @@
     },
     "@ionic/angular-toolkit:page": {
       "styleext": "scss"
+    },
+    "@schematics/angular": {
+      "component": {
+        "spec": false
+      },
+      "service": {
+        "spec": false
+      },
+      "page": {
+        "spec": false
+      },
+      "module": {
+        "spec": false
+      },
+      "class": {
+        "spec": false
+      },
+      "directive": {
+        "spec": false
+      },
+      "guard": {
+        "spec": false
+      },
+      "pipe": {
+        "spec": false
+      },
+      "interface": {
+        "spec": false
+      },
+      "enum": {
+        "spec": false
+      }
     }
   }
 }
