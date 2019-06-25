@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-slides #signupSlider>
+    <ion-slide>
+      <ion-list lines="none">
+        <form [formGroup]="slideOneForm">
+          <ion-item>
+            <ion-label position="floating">Nom d'utilisateur</ion-label>
+            <ion-input formControlName="username" type="text"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="slideOneForm.controls.username.pending">
+            <p>
+              <ion-text color="medium">
+                Vérification du nom d'utilisateur
+              </ion-text>
+            </p>
+          </ion-item>
+          <ion-item
+            *ngIf="
+              !slideOneForm.controls.username.valid &&
+              !slideOneForm.controls.username.pending &&
+              (slideOneForm.controls.username.dirty || submitAttempt)
+            "
+          >
+            <p>
+              <ion-text color="danger">
+                Ce nom d'utilisateur est déjà utilisé !
+              </ion-text>
+            </p>
+          </ion-item>
+        </form>
+
+        <form [formGroup]="passwordForm">
+          <ion-item>
+            <ion-label position="floating">Mot de passe</ion-label>
+            <ion-input formControlName="password" type="password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"
+              >Confirmation du mot de passe</ion-label
+            >
+            <ion-input
+              formControlName="passwordConfirmation"
+              type="password"
+            ></ion-input>
+          </ion-item>
+          <ion-item
+            *ngIf="
+              !passwordForm.valid &&
+              passwordForm.controls.password.dirty &&
+              passwordForm.controls.passwordConfirmation.dirty
+            "
+          >
+            <p>
+              <ion-text color="danger">
+                Les mots de passe doivent correspondre !
+              </ion-text>
+            </p>
+          </ion-item>
+        </form>
+        <ion-button (click)="next()">
+          Suivant
+          <ion-icon slot="end" name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-list>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-list lines="none">
+        <form [formGroup]="slideTwoForm">
+          <ion-item>
+            <ion-label position="floating">Age</ion-label>
+            <ion-input formControlName="age" type="number"></ion-input>
+          </ion-item>
+          <ion-item
+            *ngIf="
+              !slideTwoForm.controls.age.valid &&
+              slideTwoForm.controls.age.dirty
+            "
+          >
+            <p>
+              <ion-text color="danger">
+                {{ slideTwoForm.controls.age.errors?.error }}
+              </ion-text>
+            </p>
+          </ion-item>
+        </form>
+      </ion-list>
+
+      <ion-button expand="full" color="primary" (click)="save()">
+        Créer le compte
+      </ion-button>
+      <ion-button (click)="prev()">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+        Précédent
+      </ion-button>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
