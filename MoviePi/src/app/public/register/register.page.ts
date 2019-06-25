@@ -49,7 +49,6 @@ export class RegisterPage {
   }
 
   save() {
-    console.log(this.slideTwoForm.controls.age);
     if (!this.slideOneForm.valid || !this.passwordForm.valid) {
       this.signupSlider.slideTo(0);
     } else if (!this.slideTwoForm.valid) {
