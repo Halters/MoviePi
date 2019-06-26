@@ -66,11 +66,11 @@
             </p>
           </ion-item>
         </form>
-        <ion-button (click)="next()">
-          Suivant
-          <ion-icon slot="end" name="arrow-forward"></ion-icon>
-        </ion-button>
       </ion-list>
+      <ion-button (click)="next()">
+        Suivant
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-button>
     </ion-slide>
 
     <ion-slide>
@@ -95,13 +95,53 @@
         </form>
       </ion-list>
 
-      <ion-button expand="full" color="primary" (click)="save()">
-        Créer le compte
+      <ion-button (click)="next()">
+        Suivant
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
       </ion-button>
-      <ion-button (click)="prev()">
-        <ion-icon slot="start" name="arrow-back"></ion-icon>
-        Précédent
-      </ion-button>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-content>
+        <h1 text-center>Veuillez sélectionnez 10 films</h1>
+        <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+
+        <ion-list>
+          <ion-item *ngFor="let item of items">
+            <ion-label>{{ item.val }}</ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="item.isChecked">
+            </ion-checkbox>
+          </ion-item>
+        </ion-list>
+
+        <ion-infinite-scroll (ionInfinite)="loadData($event)">
+          <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Loading more data..."
+          >
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
     </ion-slide>
   </ion-slides>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-grid>
+        <ion-row class="ion-justify-content-evenly">
+          <ion-button (click)="prev()">
+            <ion-icon slot="start" name="arrow-back"></ion-icon>
+          </ion-button>
+          <ion-button color="primary" (click)="save()">
+            Créer le compte
+          </ion-button>
+          <ion-button (click)="next()">
+            <ion-icon slot="end" name="arrow-forward"></ion-icon>
+          </ion-button>
+        </ion-row>
+      </ion-grid>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

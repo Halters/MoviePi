@@ -14,8 +14,23 @@ export class AppComponent {
   public appPages = [
     {
       title: 'Home',
-      url: 'members/home',
+      url: '/members/home',
       icon: 'home'
+    },
+    {
+      title: 'Films vus',
+      url: 'members/home',
+      icon: 'eye'
+    },
+    {
+      title: 'Liste des films',
+      url: 'members/home',
+      icon: 'film'
+    },
+    {
+      title: 'Suggestions',
+      url: '/members/suggestions',
+      icon: 'bulb'
     }
   ];
 
