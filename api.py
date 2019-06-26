@@ -29,17 +29,18 @@ class Account(Resource):
         return jsonify(result)
 
 class Tag(Resource):
-    def get(self, nbtag):
-        av = request.args
-        try :
-            nb_to_return = int(nbtag)
-        except ValueError:
-            nb_to_return = 0
+    def get(self):
+        #av = request.args
+        #try :
+        #    nb_to_return = int(nbtag)
+        #except ValueError:
+        #    nb_to_return = 0
         cmd = "SELECT genres FROM mytable GROUP BY genres"
         conn = movie_connect.connect()
         query = conn.execute(cmd)
         result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
-        print(result)
+        for genre, tags in result.items():  
+            print(genre, ",", tags)
         #for i in query.cursor:
         #    print(i)
         conn.close()
@@ -101,4 +102,4 @@ api.add_resource(Suggestion,'/sugg/<flag_str> <already_seen>')
 api.add_resource(Tag,'/tag')
 
 if __name__ == '__main__':
-     app.run(port='5002')
+     app.run(host='0.0.0.0', port='5002')
