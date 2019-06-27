@@ -11,9 +11,11 @@ from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from sqlalchemy import create_engine
 from flask_api import status
+from flask_cors import CORS
 from json import dumps
 
 app = Flask(__name__)
+CORS(app)
 movie_connect = create_engine('mysql+pymysql://root:Sphinxdepau40@@localhost:3306/TMDB')
 user_connect = create_engine('mysql+pymysql://root:Sphinxdepau40@@localhost:3306/ACCOUNT_BASE')
 api = Api(app)
@@ -30,12 +32,12 @@ class Account(Resource):
         return jsonify(result)
 
 class Tag(Resource):
-    def get(self):
-        #av = request.args
-        #try :
-        #    nb_to_return = int(nbtag)
-        #except ValueError:
-        #    nb_to_return = 0
+    def get(self, start_point, nb_find):
+        av = request.args
+        try :
+            nb_to_return = int(nbtag)
+        except ValueError:
+            nb_to_return = 0
         cmd = "SELECT genres FROM mytable GROUP BY genres"
         conn = movie_connect.connect()
         query = conn.execute(cmd)
@@ -77,7 +79,7 @@ class Suggestion(Resource):
         query = conn.execute(cmd)
         result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
         conn.close()
-        return jsonify(result)
+        return jsonify("200 OK", result)
 
 
 class Search(Resource):
@@ -89,7 +91,7 @@ class Search(Resource):
             query = conn.execute("SELECT original_title,director,genres FROM mytable WHERE director LIKE '%%{}%%'".format(tosearch[1]))
         if (tosearch[0] == 'title'):
             query = conn.execute("SELECT original_title,genres FROM mytable WHERE original_title LIKE '%%{}%%'".format(tosearch[1]))
-        if (tosearch[0] == 'cast'):
+        if (tosearch[0] == 'actor'):
             query = conn.execute("SELECT original_title,cast FROM mytable WHERE cast LIKE '%%{}%%'".format(tosearch[1]))
         if (tosearch[0] == 'genres'):
             query = conn.execute("SELECT genres,original_title FROM mytable WHERE genres LIKE '%%{}%%'".format(tosearch[1]))
@@ -99,7 +101,7 @@ class Search(Resource):
 
 api.add_resource(Search,'/filmsearch/<command>') # Route_1
 api.add_resource(Account,'/account/<info_account>') # Route 2
-api.add_resource(Suggestion,'/sugg/<flag_str> <already_seen>')
+api.add_resource(Suggestion,'/filmsuggestion/<flag_str> <already_seen>')
 api.add_resource(Tag,'/tag')
 
 if __name__ == '__main__':
