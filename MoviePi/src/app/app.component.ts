@@ -64,4 +64,8 @@ export class AppComponent {
     this.authenticationService.logout();
     this.menu.close('sidebar');
   }
+
+  isLogged() {
+    return this.authenticationService.isAuthenticated();
+  }
 }
