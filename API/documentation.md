@@ -6,32 +6,28 @@
 **Data Formating**
 
   _{"keyword" : "value}_
+
 ----
 
 * **URL**
 
   _/users_
 
-* **Method:**
-  
-  <_The request type_>
+* **Method: Type of the request**
 
-  `GET` | `POST` | `DELETE` | `PUT`
-  
+  `POST`
+
 *  **URL Params**
 
-   <_If URL params exist, specify them in accordance with name mentioned in URL section. Separate into optional and required. Document data constraints._> 
-
-   **Required:**
- 
-   `id=[integer]`
-
-   **Optional:**
- 
-   `photo_id=[alphanumeric]`
+    _None_
+   ##_If URL params exist, specify them in accordance with name mentioned in URL section. Separate into optional and required. Document data constraints._ 
 
 * **Data Params**
 
+    {
+        username: string,
+        lol: int
+    }
   <_If making a post request, what should the body payload look like? URL Params rules apply here too._>
 
 * **Success Response:**

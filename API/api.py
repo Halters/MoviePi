@@ -28,14 +28,14 @@ class User(Resource):
     def update(self, command):
 
 
-class Users
+class Users(Resource):
+    def post(self):
 
 
 
-api.add_resource(Users, '/users/login/') # Route_1 // TYPE = POST
+api.add_resource(Users, '/users/') # Route_1 // TYPE = POST
 api.add_resource(User, '/user/register/') # Route 2 // TYPE = POST
-api.add_resource(User, '/user/<id>') # Route 3 // TYPE = PATCH
-api.add_resource(User, '/user/<id>') # Route 4 // TYPE = GET
-api.add_resource(User, '/user/<id>') # Route 5 // TYPE = UPDATE
+api.add_resource(User, '/user/<id>') # Route 3 // TYPE = GET
+api.add_resource(User, '/user/<id>') # Route 4 // TYPE = UPDATE
 if __name__ == '__main__':
      app.run(host='0.0.0.0', port='5002')
