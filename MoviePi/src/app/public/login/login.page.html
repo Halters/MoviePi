@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-title>Connexion</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,13 +15,18 @@
       <ion-label position="floating">Mot de passe</ion-label>
       <ion-input formControlName="password" type="password"></ion-input>
     </ion-item>
+    <ion-item *ngIf="invalidLogin">
+      <p>
+        <ion-text color="danger">Les informations sont invalides</ion-text>
+      </p>
+    </ion-item>
   </form>
-  <ion-button (click)="login()" expand="block">Login</ion-button>
+  <ion-button (click)="login()" expand="block">Connexion</ion-button>
   <ion-button
     color="secondary"
     routerLink="/register"
     routerDirection="forward"
   >
-    Register
+    S'enregistrer
   </ion-button>
 </ion-content>

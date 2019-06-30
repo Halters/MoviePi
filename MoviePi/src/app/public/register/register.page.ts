@@ -1,9 +1,11 @@
+import { User } from './../../interfaces/user';
+import { AuthenticationService } from './../../services/authentication.service';
 import { PasswordValidator } from './../../validators/password';
 import { AgeValidator } from './../../validators/age';
 import { UsernameValidator } from './../../validators/username';
 import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, IonSlides } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -13,21 +15,25 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegisterPage {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  @ViewChild('signupSlider') signupSlider;
-  public slideOneForm: FormGroup;
-  public passwordForm: FormGroup;
-  public slideTwoForm: FormGroup;
-  // public films: Observable<any>;
-  public items = [];
+  @ViewChild('signupSlider') signupSlider: IonSlides;
+  accountInfos: FormGroup;
+  passwordForm: FormGroup;
+  ageForm: FormGroup;
+  attemptRegister = false;
+  items = [];
 
-  constructor(public formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(
+    public formBuilder: FormBuilder,
+    private http: HttpClient,
+    private authService: AuthenticationService
+  ) {
     this.http
       .get('http://10.15.193.10:5002/filmsearch/title=star')
       .subscribe(response => {
         console.log(response);
       });
 
-    this.slideOneForm = formBuilder.group({
+    this.accountInfos = formBuilder.group({
       username: [
         '',
         Validators.compose([
@@ -46,7 +52,7 @@ export class RegisterPage {
       { validator: PasswordValidator.checkPasswords }
     );
 
-    this.slideTwoForm = formBuilder.group({
+    this.ageForm = formBuilder.group({
       age: ['', AgeValidator.isValid]
     });
 
@@ -93,15 +99,21 @@ export class RegisterPage {
   }
 
   save() {
-    if (!this.slideOneForm.valid || !this.passwordForm.valid) {
+    this.attemptRegister = true;
+    if (!this.accountInfos.valid || !this.passwordForm.valid) {
       this.signupSlider.slideTo(0);
-    } else if (!this.slideTwoForm.valid) {
+    } else if (!this.ageForm.valid) {
       this.signupSlider.slideTo(1);
     } else {
-      console.log('success!');
-      console.log(this.slideOneForm.value);
-      console.log(this.passwordForm.value);
-      console.log(this.slideTwoForm.value);
+      this.attemptRegister = false;
+      const user: User = {
+        uuid: undefined,
+        username: this.accountInfos.get('username').value,
+        password: this.passwordForm.get('password').value,
+        age: this.ageForm.get('age').value
+      };
+      const genres = null;
+      this.authService.register(user, genres);
     }
   }
 }

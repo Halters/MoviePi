@@ -3,20 +3,28 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/login"></ion-back-button>
     </ion-buttons>
-    <ion-title>Register</ion-title>
+    <ion-title>S'enregistrer</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-item *ngIf="attemptRegister" lines="none">
+    <p>
+      <ion-text color="danger">Vérifiez les informations saisies</ion-text>
+    </p>
+  </ion-item>
   <ion-slides #signupSlider>
     <ion-slide>
       <ion-list lines="none">
-        <form [formGroup]="slideOneForm">
+        <form [formGroup]="accountInfos">
+          <h3>
+            Votre compte
+          </h3>
           <ion-item>
             <ion-label position="floating">Nom d'utilisateur</ion-label>
             <ion-input formControlName="username" type="text"></ion-input>
           </ion-item>
-          <ion-item *ngIf="slideOneForm.controls.username.pending">
+          <ion-item *ngIf="accountInfos.controls.username.pending">
             <p>
               <ion-text color="medium">
                 Vérification du nom d'utilisateur
@@ -25,9 +33,9 @@
           </ion-item>
           <ion-item
             *ngIf="
-              !slideOneForm.controls.username.valid &&
-              !slideOneForm.controls.username.pending &&
-              (slideOneForm.controls.username.dirty || submitAttempt)
+              !accountInfos.controls.username.valid &&
+              !accountInfos.controls.username.pending &&
+              (accountInfos.controls.username.dirty || submitAttempt)
             "
           >
             <p>
@@ -66,44 +74,30 @@
             </p>
           </ion-item>
         </form>
-      </ion-list>
-      <ion-button (click)="next()">
-        Suivant
-        <ion-icon slot="end" name="arrow-forward"></ion-icon>
-      </ion-button>
-    </ion-slide>
-
-    <ion-slide>
-      <ion-list lines="none">
-        <form [formGroup]="slideTwoForm">
+        <form [formGroup]="ageForm">
+          <h3>
+            Vos informations
+          </h3>
           <ion-item>
             <ion-label position="floating">Age</ion-label>
             <ion-input formControlName="age" type="number"></ion-input>
           </ion-item>
           <ion-item
-            *ngIf="
-              !slideTwoForm.controls.age.valid &&
-              slideTwoForm.controls.age.dirty
-            "
+            *ngIf="!ageForm.controls.age.valid && ageForm.controls.age.dirty"
           >
             <p>
               <ion-text color="danger">
-                {{ slideTwoForm.controls.age.errors?.error }}
+                {{ ageForm.controls.age.errors?.error }}
               </ion-text>
             </p>
           </ion-item>
         </form>
       </ion-list>
-
-      <ion-button (click)="next()">
-        Suivant
-        <ion-icon slot="end" name="arrow-forward"></ion-icon>
-      </ion-button>
     </ion-slide>
 
     <ion-slide>
       <ion-content>
-        <h1 text-center>Veuillez sélectionnez 10 films</h1>
+        <h3 text-center>Veuillez sélectionnez 5 genres</h3>
         <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
 
         <ion-list>
