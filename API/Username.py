@@ -6,7 +6,7 @@
 ##
 
 from flask_restful import Resource
-from utils import fill_return_packet, db_connect, LEN_MAX_USER
+from utils import fill_return_packet, db, LEN_MAX_USER
 from flask import request
 
 
@@ -16,10 +16,7 @@ class Username(Resource):
             ret_packet = fill_return_packet(
                 0, "La limite de caractère est de 255", False)
             return ret_packet
-        conn = db_connect.connect()
-        query = conn.execute("SELECT * From users WHERE username=%s", username)
-        result = [dict(zip(tuple(query.keys()), i)) for i in query.cursor]
-        print(result)
+        result = db.request("SELECT * From users WHERE username=%s", username)
         if result:
             ret_packet = fill_return_packet(
                 0, "Le nom d'utilisateur est déjà utilisé", False)

@@ -7,7 +7,7 @@
 
 from flask import request
 from flask_restful import Resource
-from utils import db_connect, fill_return_packet, token_payload, Key
+from utils import db, fill_return_packet, token_payload, Key
 import hashlib
 import jwt
 import uuid
@@ -26,10 +26,8 @@ class User(Resource):
         password = password.hexdigest()
         user_uuid = uuid.uuid4()
         age = int(packet['age'])
-        conn = db_connect.connect()
-        query = conn.execute("INSERT INTO users (username, age, password, uuid) VALUES (%s,%s,%s,_binary %s)",
-                             username, age, password, user_uuid.bytes)
-        result = [dict(zip(tuple(query.keys()), i)) for i in query.cursor]
+        result = db.request("INSERT INTO users (username, age, password, uuid) VALUES (%s,%s,%s,_binary %s)",
+                            username, age, password, user_uuid.bytes)
         if not result:
             ret_packet = fill_return_packet(
                 0, "Echec à la création du compte", None)

@@ -6,7 +6,7 @@
 ##
 
 from flask_restful import Resource
-from utils import fill_return_packet, db_connect, Key, ret_packet, LEN_MAX_USER, token_payload
+from utils import fill_return_packet, db, Key, ret_packet, LEN_MAX_USER, token_payload
 from flask import request
 import hashlib
 import jwt
@@ -20,9 +20,7 @@ class Users(Resource):
     def get(self):
         packet = request.json
         uuid_find = str(packet[0]['uuid'])
-        conn = db_connect.connect()
-        query = conn.execute("SELECT * FROM users WHERE uuid=%s", uuid_find)
-        result = [dict(zip(tuple(query.keys()), i)) for i in query.cursor]
+        result = db.request("SELECT * FROM users WHERE uuid=%s", uuid_find)
         if not result:
             ret_packet = fill_return_packet(0, "User not found", None)
             return ret_packet
@@ -54,10 +52,8 @@ class Users(Resource):
         #    self.data_information[2]['JWT'] = jwt.encode(token_payload, Key, algorithm='HS256').decode('utf-8')
         #    ret_packet = fill_return_packet()
         #    return ret_packet
-        conn = db_connect.connect()
-        query = conn.execute(
+        result = db.request(
             "SELECT * FROM users WHERE username=%s AND password=%s", username, hex_dig)
-        result = [dict(zip(tuple(query.keys()), i)) for i in query.cursor]
         if not result:
             ret_packet = fill_return_packet(
                 0, "Account doesn't exist", self.data_information)
