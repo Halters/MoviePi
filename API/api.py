@@ -19,7 +19,6 @@ from Genres import Genres
 import json
 import hashlib
 import jwt
-import uuid
 import time
 
 app = Flask(__name__)
@@ -37,7 +36,7 @@ CORS(app)
 
 
 api.add_resource(Users, '/api/v1/users') # Route_1 // TYPE = POST
-api.add_resource(Username, '/api/v1/checkUsername') # Route 2 // Type = GET
+api.add_resource(Username, '/api/v1/checkUsername/<username>') # Route 2 // Type = GET
 api.add_resource(User, '/user/register') # Route 2 // TYPE = POST
 api.add_resource(Genres, '/api/v1/genres')
 #api.add_resource(User, '/user/<id>') # Route 3 // TYPE = GET
