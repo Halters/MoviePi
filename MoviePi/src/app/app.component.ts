@@ -10,7 +10,7 @@ import { AuthenticationService } from './services/authentication.service';
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  public appPages = [
+  appPages = [
     {
       title: 'Home',
       url: '/members/home',
@@ -18,12 +18,12 @@ export class AppComponent {
     },
     {
       title: 'Films vus',
-      url: 'members/home',
+      url: 'members/filmsseen',
       icon: 'eye'
     },
     {
       title: 'Liste des films',
-      url: 'members/home',
+      url: '/members/filmslist',
       icon: 'film'
     },
     {
@@ -32,6 +32,12 @@ export class AppComponent {
       icon: 'bulb'
     }
   ];
+
+  footerLink = {
+    title: 'Preferences',
+    url: '/members/preferences',
+    icon: ''
+  };
 
   constructor(
     private platform: Platform,

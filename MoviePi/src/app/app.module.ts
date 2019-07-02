@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { UsernameValidatorDirective } from './validators/username-validator.directive';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -22,7 +23,7 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, UsernameValidatorDirective],
   entryComponents: [],
   imports: [
     BrowserModule,

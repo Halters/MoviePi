@@ -29,4 +29,14 @@ export class ApiRequestsService {
   reauth(): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(`${this.API_SERVER_ADDRESS}user`);
   }
+
+  getGenres(): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(`${this.API_SERVER_ADDRESS}genres`);
+  }
+
+  checkUsername(username: string): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}checkUsername/${username}`
+    );
+  }
 }

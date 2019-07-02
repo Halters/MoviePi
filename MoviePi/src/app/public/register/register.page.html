@@ -22,7 +22,11 @@
           </h3>
           <ion-item>
             <ion-label position="floating">Nom d'utilisateur</ion-label>
-            <ion-input formControlName="username" type="text"></ion-input>
+            <ion-input
+              formControlName="username"
+              type="text"
+              appUsernameValidator
+            ></ion-input>
           </ion-item>
           <ion-item *ngIf="accountInfos.controls.username.pending">
             <p>
@@ -40,7 +44,7 @@
           >
             <p>
               <ion-text color="danger">
-                Ce nom d'utilisateur est déjà utilisé !
+                {{ accountInfos.controls.username.errors?.error }}
               </ion-text>
             </p>
           </ion-item>
@@ -98,23 +102,15 @@
     <ion-slide>
       <ion-content>
         <h3 text-center>Veuillez sélectionnez 5 genres</h3>
-        <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
 
+        <p *ngIf="!genres">Chargement...</p>
         <ion-list>
-          <ion-item *ngFor="let item of items">
-            <ion-label>{{ item.val }}</ion-label>
+          <ion-item *ngFor="let item of genres">
+            <ion-label>{{ item.name }}</ion-label>
             <ion-checkbox slot="end" [(ngModel)]="item.isChecked">
             </ion-checkbox>
           </ion-item>
         </ion-list>
-
-        <ion-infinite-scroll (ionInfinite)="loadData($event)">
-          <ion-infinite-scroll-content
-            loadingSpinner="bubbles"
-            loadingText="Loading more data..."
-          >
-          </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
       </ion-content>
     </ion-slide>
   </ion-slides>
@@ -122,20 +118,26 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-buttons>
-      <ion-grid>
-        <ion-row class="ion-justify-content-evenly">
-          <ion-button (click)="prev()">
+    <ion-grid>
+      <ion-row class="ion-justify-content-evenly">
+        <ion-buttons>
+          <ion-button
+            (click)="prev()"
+            [style.visibility]="this.prevButtonVisibility"
+          >
             <ion-icon slot="start" name="arrow-back"></ion-icon>
           </ion-button>
           <ion-button color="primary" (click)="save()">
             Créer le compte
           </ion-button>
-          <ion-button (click)="next()">
+          <ion-button
+            (click)="next()"
+            [style.visibility]="this.nextButtonVisibility"
+          >
             <ion-icon slot="end" name="arrow-forward"></ion-icon>
           </ion-button>
-        </ion-row>
-      </ion-grid>
-    </ion-buttons>
+        </ion-buttons>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-footer>

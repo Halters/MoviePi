@@ -1,38 +1,38 @@
+import {
+  UsernameValidatorDirective,
+  usernameValidator
+} from './../../validators/username-validator.directive';
+import { ApiResponse } from './../../interfaces/api-response';
+import { ApiRequestsService } from './../../services/api-requests.service';
 import { User } from './../../interfaces/user';
 import { AuthenticationService } from './../../services/authentication.service';
 import { PasswordValidator } from './../../validators/password';
 import { AgeValidator } from './../../validators/age';
-import { UsernameValidator } from './../../validators/username';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IonInfiniteScroll, IonSlides } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss']
 })
-export class RegisterPage {
+export class RegisterPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
   @ViewChild('signupSlider') signupSlider: IonSlides;
   accountInfos: FormGroup;
   passwordForm: FormGroup;
   ageForm: FormGroup;
   attemptRegister = false;
-  items = [];
+  genres: any = undefined;
+  prevButtonVisibility = 'hidden';
+  nextButtonVisibility = 'visible';
 
   constructor(
     public formBuilder: FormBuilder,
-    private http: HttpClient,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private apiRequests: ApiRequestsService
   ) {
-    this.http
-      .get('http://10.15.193.10:5002/filmsearch/title=star')
-      .subscribe(response => {
-        console.log(response);
-      });
-
     this.accountInfos = formBuilder.group({
       username: [
         '',
@@ -40,7 +40,7 @@ export class RegisterPage {
           Validators.required,
           Validators.pattern('[a-zA-Z]*')
         ]),
-        UsernameValidator.checkUsername
+        usernameValidator(this.apiRequests)
       ]
     });
 
@@ -56,38 +56,35 @@ export class RegisterPage {
       age: ['', AgeValidator.isValid]
     });
 
-    this.initializeItems();
+    this.initializeGenres();
   }
 
-  initializeItems() {
-    this.items = [];
-    for (let i = 0; i < 10; i++) {
-      this.items.push({ val: i.toString(), isChecked: false });
-    }
+  ngOnInit() {
+    this.signupSlider.ionSlideDidChange.subscribe(e => {
+      this.signupSlider.isBeginning().then((v: boolean) => {
+        if (v) {
+          this.prevButtonVisibility = 'hidden';
+        } else {
+          this.prevButtonVisibility = 'visible';
+        }
+      });
+      this.signupSlider.isEnd().then((v: boolean) => {
+        if (!v) {
+          this.nextButtonVisibility = 'visible';
+        } else {
+          this.nextButtonVisibility = 'hidden';
+        }
+      });
+    });
   }
 
-  getItems(ev) {
-    // this.initializeItems();
-    // const val = ev.target.value;
-    // if (val && val.trim() !== '') {
-    //   this.items = this.items.filter(item => {
-    //     return item.val.toLowerCase().indexOf(val.toLowerCase()) > -1;
-    //   });
-    // }
-  }
-
-  loadData(event) {
-    setTimeout(() => {
-      console.log('Done');
-      for (let i = 0; i < 10; i++) {
-        this.items.push({ val: i.toString(), isChecked: false });
+  initializeGenres() {
+    this.apiRequests.getGenres().subscribe(async (res: ApiResponse) => {
+      this.genres = res.data;
+      for (const item of this.genres) {
+        item.isChecked = false;
       }
-      event.target.complete();
-
-      if (this.items.length === 50) {
-        event.target.disabled = true;
-      }
-    }, 500);
+    });
   }
 
   next() {
@@ -98,11 +95,21 @@ export class RegisterPage {
     this.signupSlider.slidePrev();
   }
 
+  isFirst() {
+    return this.signupSlider.isBeginning();
+  }
+
   save() {
+    console.log(this.accountInfos.controls.username.errors);
     this.attemptRegister = true;
-    if (!this.accountInfos.valid || !this.passwordForm.valid) {
+    const genres = this.genres.filter(i => i.isChecked);
+    if (
+      !this.accountInfos.valid ||
+      !this.passwordForm.valid ||
+      !this.ageForm.valid
+    ) {
       this.signupSlider.slideTo(0);
-    } else if (!this.ageForm.valid) {
+    } else if (genres.length < 5) {
       this.signupSlider.slideTo(1);
     } else {
       this.attemptRegister = false;
@@ -110,9 +117,9 @@ export class RegisterPage {
         uuid: undefined,
         username: this.accountInfos.get('username').value,
         password: this.passwordForm.get('password').value,
-        age: this.ageForm.get('age').value
+        age: this.ageForm.get('age').value,
+        genres: null
       };
-      const genres = null;
       this.authService.register(user, genres);
     }
   }

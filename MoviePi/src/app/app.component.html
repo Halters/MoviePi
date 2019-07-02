@@ -24,9 +24,9 @@
         </ion-list>
       </ion-content>
       <ion-footer>
-        <ion-item (click)="logout()" lines="none">
-          <ion-icon slot="start" name="log-out"></ion-icon>
-          <ion-label>Déconnexion</ion-label>
+        <ion-item [routerDirection]="'root'" [routerLink]="footerLink.url">
+          <ion-icon slot="start" [name]="footerLink.icon"></ion-icon>
+          <ion-label>Préferences</ion-label>
         </ion-item>
       </ion-footer>
     </ion-menu>
