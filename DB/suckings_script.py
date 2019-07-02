@@ -15,8 +15,7 @@ def update_films_directors(conn, result, crew, lines):
     sql += ",\""
     for i in crew:
         if (i["department"] == "Directing"):
-            lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = "
-            lines += str(i["id"])).fetchall()
+            lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = " + str(i["id"])).fetchall()
             if (lines):
                 (id_actors,) = lines[0]
                 sql += str(id_actors) + ","
@@ -33,8 +32,7 @@ def update_films_actors(conn, result, cast, lines):
         sql += str(max_id_movies)
     sql += ",\""
     for i in cast:
-        lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = "
-        lines += str(i["id"])).fetchall()
+        lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = " + str(i["id"])).fetchall()
         if (lines):
             (id_actors,) = lines[0]
             sql += str(id_actors) + ","
@@ -52,8 +50,7 @@ def update_films_genres(conn, result, lines):
         sql += str(max_id_movies)
     sql += ",\""
     for i in genres:
-        lines = conn.execute("SELECT id FROM genres WHERE id_tmdb = "
-        lines += str(i["id"])).fetchall()
+        lines = conn.execute("SELECT id FROM genres WHERE id_tmdb = " + str(i["id"])).fetchall()
         if (lines):
             (id_genre,) = lines[0]
             sql += str(id_genre) + ","
@@ -73,8 +70,7 @@ def update_movies(requ_str, api_key, conn, id):
         resp = requests.get(requ_str + "/movie/" + str(id) + api_key)
         result = resp.json()
         time.sleep(1)
-        credits = requests.get(requ_str + "/movie/" + str(id)
-        credits += "/credits" + api_key).json()
+        credits = requests.get(requ_str + "/movie/" + str(id) + "/credits" + api_key).json()
         print(id)
         id += 1
         if (resp.status_code != 200):
