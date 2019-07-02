@@ -10,6 +10,18 @@ const routes: Routes = [
   {
     path: 'suggestions',
     loadChildren: './suggestions/suggestions.module#SuggestionsPageModule'
+  },
+  {
+    path: 'preferences',
+    loadChildren: './preferences/preferences.module#PreferencesPageModule'
+  },
+  {
+    path: 'filmslist',
+    loadChildren: './filmslist/filmslist.module#FilmslistPageModule'
+  },
+  {
+    path: 'filmsseen',
+    loadChildren: './filmsseen/filmsseen.module#FilmsseenPageModule'
   }
 ];
 
