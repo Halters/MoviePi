@@ -27,9 +27,7 @@ export class ApiRequestsService {
   }
 
   reauth(): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>(
-      `${this.API_SERVER_ADDRESS}user/reauth`
-    );
+    return this.httpClient.get<ApiResponse>(`${this.API_SERVER_ADDRESS}users`);
   }
 
   getGenres(): Observable<ApiResponse> {
