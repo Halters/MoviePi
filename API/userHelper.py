@@ -1,3 +1,10 @@
+##
+# EPITECH PROJECT, 2019
+# MoviePi
+# File description:
+# userHelper.py
+##
+
 import uuid
 import hashlib
 
@@ -52,8 +59,8 @@ class userHelper():
             queryString += "id = %s"
             result = self.db.request(queryString, user_id)
         elif user_uuid:
-            queryString += " uuid = %s"
-            result = self.db.request(queryString, uuid)
+            queryString += " uuid = _binary %s"
+            result = self.db.request(queryString, user_uuid)
         else:
             return False
         if not result:
@@ -70,7 +77,7 @@ class userHelper():
         return str(uuid.UUID(bytes=uuid_binary))
 
     def getUUIDBinaryFromStr(self, uuid_str):
-        return uuid_str.bytes
+        return uuid.UUID(uuid_str).bytes
 
     def getUserForAuth(self, username, password):
         password = self.hashPassword(password)

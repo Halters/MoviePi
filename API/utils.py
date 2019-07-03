@@ -5,12 +5,12 @@
 # utils.py
 ##
 
-import time
+import datetime
+import jwt
 from dbHelper import dbHelper
 from userHelper import userHelper
 
 ret_packet = {'responseStatus': 0, 'message': "", 'data': any}
-token_payload = {'sub': "", "exp": (int(time.time()) + 86400)}
 Key = 'MoviePiTheoAudreyHicham'
 LEN_MAX_USER = 255
 
@@ -23,3 +23,33 @@ def fill_return_packet(iswork, typeoferror, data):
     ret_packet['message'] = typeoferror
     ret_packet['data'] = data
     return ret_packet
+
+
+def encode_auth_token(user_id):
+    try:
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+            'iat': datetime.datetime.utcnow(),
+            'sub': user_id
+        }
+        return jwt.encode(
+            payload,
+            Key,
+            algorithm='HS256'
+        ).decode('utf-8')
+    except Exception as e:
+        return e
+
+
+def check_auth_token(request):
+    auth_headers = request.headers.get('Authorization', '').split()
+    if len(auth_headers) != 2:
+        return None
+    try:
+        payload = jwt.decode(auth_headers[1], Key)
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        return False
+    except jwt.InvalidTokenError:
+        return False
+    return False
