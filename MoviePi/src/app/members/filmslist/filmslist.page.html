@@ -1,9 +1,36 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>filmslist</ion-title>
+    <ion-buttons slot="start" *ngIf="!searchOpen">
+      <ion-menu-button> </ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="!searchOpen">Liste des films</ion-title>
+
+    <ion-select slot="end" *ngIf="searchOpen" interface="popover">
+      <ion-select-option value="f">Genre 1</ion-select-option>
+      <ion-select-option value="m">Genre 2</ion-select-option>
+    </ion-select>
+    <ion-searchbar
+      *ngIf="searchOpen"
+      showCancelButton="true"
+      (ionCancel)="searchOpen = false"
+    >
+    </ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!searchOpen" (click)="searchOpen = true">
+        <ion-icon name="search" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card *ngFor="let item of items">
+    <ion-card-header>
+      <img [src]="item.src" />
+    </ion-card-header>
 
+    <ion-card-content>
+      {{ item.text }}
+    </ion-card-content>
+  </ion-card>
 </ion-content>

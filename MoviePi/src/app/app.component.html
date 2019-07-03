@@ -23,12 +23,14 @@
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
-      <ion-footer>
-        <ion-item [routerDirection]="'root'" [routerLink]="footerLink.url">
-          <ion-icon slot="start" [name]="footerLink.icon"></ion-icon>
-          <ion-label>Préferences</ion-label>
-        </ion-item>
-      </ion-footer>
+      <ion-menu-toggle auto-hide="false">
+        <ion-footer>
+          <ion-item [routerDirection]="'root'" [routerLink]="footerLink.url">
+            <ion-icon slot="start" [name]="footerLink.icon"></ion-icon>
+            <ion-label> {{ footerLink.title }} </ion-label>
+          </ion-item>
+        </ion-footer>
+      </ion-menu-toggle>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>
   </ion-split-pane>
