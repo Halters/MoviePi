@@ -13,15 +13,23 @@ from Users import Users
 from Username import Username
 from User import User
 from Genres import Genres
+from UserGenres import UserGenres
 
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
-api.add_resource(Users, '/api/v1/users')
-api.add_resource(Username, '/api/v1/checkUsername/<username>')
-api.add_resource(User, '/user/register')
-api.add_resource(Genres, '/api/v1/genres')
+API_SUBURL = '/api'
+API_VERSION = '1'
+
+API_BASEURL = API_SUBURL + '/v' + API_VERSION + '/'
+
+api.add_resource(Users, API_BASEURL + 'users')
+api.add_resource(Username, API_BASEURL + 'checkUsername/<username>')
+api.add_resource(User, API_BASEURL + 'user')
+api.add_resource(UserGenres, API_BASEURL + 'user/genres/<uuid>')
+api.add_resource(UserGenres, API_BASEURL + 'user/genres')
+api.add_resource(Genres, API_BASEURL + 'genres')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')

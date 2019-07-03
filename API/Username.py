@@ -6,22 +6,11 @@
 ##
 
 from flask_restful import Resource
-from utils import fill_return_packet, db, LEN_MAX_USER
+from utils import fill_return_packet, userH
 from flask import request
 
 
 class Username(Resource):
     def get(self, username):
-        if (len(username) > LEN_MAX_USER):
-            ret_packet = fill_return_packet(
-                0, "La limite de caractère est de 255", False)
-            return ret_packet
-        result = db.request("SELECT * From users WHERE username=%s", username)
-        if result:
-            ret_packet = fill_return_packet(
-                0, "Le nom d'utilisateur est déjà utilisé", False)
-            return ret_packet
-        if not result:
-            ret_packet = fill_return_packet(
-                1, "Le nom d'utilisateur est valide", True)
-            return ret_packet
+        isValid, message = userH.checkUsername(username)
+        return fill_return_packet(1, message, isValid)

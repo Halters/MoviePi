@@ -7,10 +7,8 @@
 
 from flask import request
 from flask_restful import Resource
-from utils import db, fill_return_packet, token_payload, Key
-import hashlib
+from utils import db, fill_return_packet, token_payload, Key, userH
 import jwt
-import uuid
 import time
 
 
@@ -19,21 +17,19 @@ class User(Resource):
 
     def post(self):
         packet = request.json
-        print(packet)
         username = packet['username']
         password = packet['password']
-        password = hashlib.sha256(password.encode('utf_8'))
-        password = password.hexdigest()
-        user_uuid = uuid.uuid4()
         age = int(packet['age'])
-        result = db.request("INSERT INTO users (username, age, password, uuid) VALUES (%s,%s,%s,_binary %s)",
-                            username, age, password, user_uuid.bytes)
-        if not result:
+        newUser = userH.createNewUser(username, password, age)
+        if not newUser:
             ret_packet = fill_return_packet(
                 0, "Echec à la création du compte", None)
             return ret_packet
-        self.data_information['userInfos'] = result
-        token_payload["sub"] = str(user_uuid)
+        print(newUser)
+        userH.setUserGenres(newUser['id'], packet['genres'])
+        newUser['genres'] = userH.getUserGenres(newUser['id'])
+        self.data_information['userInfos'] = newUser
+        token_payload["sub"] = str(newUser['uuid'])
         self.data_information['JWT'] = jwt.encode(
             token_payload, Key, algorithm='HS256').decode('utf-8')
         ret_packet = fill_return_packet(
