@@ -13,13 +13,13 @@ import { Router } from '@angular/router';
 export class AppComponent {
   appPages = [
     {
-      title: 'Home',
+      title: 'Fil d\'actualité',
       url: '/members/home',
       icon: 'home'
     },
     {
       title: 'Films vus',
-      url: 'members/filmsseen',
+      url: '/members/filmsseen',
       icon: 'eye'
     },
     {
@@ -35,9 +35,9 @@ export class AppComponent {
   ];
 
   footerLink = {
-    title: 'Preferences',
+    title: 'Préférences',
     url: '/members/preferences',
-    icon: ''
+    icon: 'build'
   };
 
   constructor(
