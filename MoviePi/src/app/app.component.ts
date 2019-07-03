@@ -72,7 +72,6 @@ export class AppComponent {
   }
 
   isLogged() {
-    return true;
     return this.authenticationService.isAuthenticated();
   }
 }
