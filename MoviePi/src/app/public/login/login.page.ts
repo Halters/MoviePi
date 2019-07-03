@@ -29,7 +29,8 @@ export class LoginPage {
         username: this.loginForm.get('username').value,
         password: this.loginForm.get('password').value,
         age: undefined,
-        uuid: undefined
+        uuid: undefined,
+        genres: undefined
       };
       this.authService.login(user);
     } else {
