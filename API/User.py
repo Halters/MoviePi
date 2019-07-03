@@ -13,7 +13,7 @@ import time
 
 
 class User(Resource):
-    data_information = {'userInfos': None, 'JWT': ""}
+    data_information = {'userInfos': None, 'JWT': "", 'exp': 0}
 
     def post(self):
         packet = request.json
@@ -25,14 +25,15 @@ class User(Resource):
             ret_packet = fill_return_packet(
                 0, "Echec à la création du compte", None)
             return ret_packet
-        print(newUser)
         userH.setUserGenres(newUser['id'], packet['genres'])
         newUser['genres'] = userH.getUserGenres(newUser['id'])
+        del newUser['id']
+        newUser['uuid'] = userH.getUUIDstrFromBinary(newUser['uuid'])
         self.data_information['userInfos'] = newUser
         token_payload["sub"] = str(newUser['uuid'])
         self.data_information['JWT'] = jwt.encode(
             token_payload, Key, algorithm='HS256').decode('utf-8')
-        ret_packet = fill_return_packet(
+        self.data_information['exp'] = int(time.time() + 86400)
+        result = fill_return_packet(
             1, "Création du compte OK.", self.data_information)
-        ret_packet['exp'] = int(time.time() + 86400)
-        return ret_packet
+        return result

@@ -9,7 +9,7 @@ import time
 from dbHelper import dbHelper
 from userHelper import userHelper
 
-ret_packet = {'responseStatus': 0, 'message': "", 'data': any, "exp": 0}
+ret_packet = {'responseStatus': 0, 'message': "", 'data': any}
 token_payload = {'sub': "", "exp": (int(time.time()) + 86400)}
 Key = 'MoviePiTheoAudreyHicham'
 LEN_MAX_USER = 255

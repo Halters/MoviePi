@@ -12,6 +12,8 @@ from utils import fill_return_packet, userH
 
 class UserGenres(Resource):
     def get(self, uuid):
+        if not uuid:
+            return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
         userInfos = userH.getUserInformations(user_uuid=uuid)
         if not userInfos:
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)

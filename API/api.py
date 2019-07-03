@@ -27,8 +27,9 @@ API_BASEURL = API_SUBURL + '/v' + API_VERSION + '/'
 api.add_resource(Users, API_BASEURL + 'users')
 api.add_resource(Username, API_BASEURL + 'checkUsername/<username>')
 api.add_resource(User, API_BASEURL + 'user')
-api.add_resource(UserGenres, API_BASEURL + 'user/genres/<uuid>')
-api.add_resource(UserGenres, API_BASEURL + 'user/genres')
+api.add_resource(UserGenres, API_BASEURL +
+                 'user/genres/<uuid>', API_BASEURL +
+                 'user/genres')
 api.add_resource(Genres, API_BASEURL + 'genres')
 
 if __name__ == '__main__':

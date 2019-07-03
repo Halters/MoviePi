@@ -65,3 +65,17 @@ class userHelper():
         queryString = "SELECT t1.id, t1.name FROM genres AS t1 INNER JOIN users_genres AS t2 ON t1.id = t2.fk_genres WHERE t2.fk_users = %s"
         result = self.db.request(queryString, user_id)
         return result
+
+    def getUUIDstrFromBinary(self, uuid_binary):
+        return str(uuid.UUID(bytes=uuid_binary))
+
+    def getUUIDBinaryFromStr(self, uuid_str):
+        return uuid_str.bytes
+
+    def getUserForAuth(self, username, password):
+        password = self.hashPassword(password)
+        user = self.db.request(
+            "SELECT * FROM users WHERE username=%s AND password=%s", username, password)
+        if not user:
+            return False
+        return user[0]

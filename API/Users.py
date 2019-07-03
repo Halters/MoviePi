@@ -6,7 +6,7 @@
 ##
 
 from flask_restful import Resource
-from utils import fill_return_packet, db, Key, ret_packet, LEN_MAX_USER, token_payload
+from utils import fill_return_packet, db, Key, ret_packet, LEN_MAX_USER, token_payload, userH
 from flask import request
 import hashlib
 import jwt
@@ -32,37 +32,18 @@ class Users(Resource):
     def post(self):
         packet = request.json
         username = str(packet["username"])
-        pwd = str(packet["password"])
-        hash_pwd = hashlib.sha256(pwd.encode('utf_8'))
-        hex_dig = hash_pwd.hexdigest()
-        # if packet[0]['JWT']:
-        #    checker = packet['exp']
-        #    if checker >= int(time.time()) + 86400:
-        #        ret_packet = fill_return_packet(0, "Token expired", None)
-        #    conn = db_connect.connect()
-        #    query = conn.execute("SELECT * FROM users WHERE uuid=%s", packet[0]['uuid'])
-        #    result = [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]
-        #    if not result:
-        #        ret_packet = fill_return_packet(0, "No uuid find in the db", None)
-        #        return ret_packet
-        #    self.data_information['userInfos'] = result
-        #    token_payload['uuid'] = packet[0]['uuid']
-        #    token_payload['exp'] = (int(time.time()) + 86400)
-        #    ret_packet['exp'] = token_payload['exp']
-        #    self.data_information[2]['JWT'] = jwt.encode(token_payload, Key, algorithm='HS256').decode('utf-8')
-        #    ret_packet = fill_return_packet()
-        #    return ret_packet
-        result = db.request(
-            "SELECT * FROM users WHERE username=%s AND password=%s", username, hex_dig)
-        if not result:
-            ret_packet = fill_return_packet(
+        password = str(packet["password"])
+        user = userH.getUserForAuth(username, password)
+        if not user:
+            return fill_return_packet(
                 0, "Account doesn't exist", self.data_information)
-            return ret_packet
-        self.data_information['userInfos'] = result
-        result[0]['uuid'] = str(uuid.UUID(bytes=result[0]['uuid']))
-        token_payload["sub"] = result[0]['uuid']
+        user['genres'] = userH.getUserGenres(user['id'])
+        user['uuid'] = userH.getUUIDstrFromBinary(user['uuid'])
+        del user['id']
+        self.data_information['userInfos'] = user
+        token_payload["sub"] = user['uuid']
+        self.data_information['exp'] = (int(time.time()) + 86400)
         self.data_information['JWT'] = jwt.encode(
             token_payload, Key, algorithm='HS256').decode('utf-8')
         ret_packet = fill_return_packet(1, "OK", self.data_information)
-        ret_packet['exp'] = (int(time.time()) + 86400)
         return ret_packet
