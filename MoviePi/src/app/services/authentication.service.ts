@@ -20,8 +20,7 @@ export class AuthenticationService {
   constructor(
     private storage: Storage,
     private apiRequests: ApiRequestsService,
-    private plt: Platform,
-    private helper: JwtHelperService
+    private plt: Platform
   ) {
     this.plt.ready().then(() => {
       this.checkToken();
@@ -54,6 +53,7 @@ export class AuthenticationService {
       if (res.data) {
         const data = res.data as AuthResponse;
         await this.storage.set(TOKEN_KEY, data.JWT);
+        console.log(data);
         this.user = data.userInfos;
         this.authenticationState.next(true);
       }
