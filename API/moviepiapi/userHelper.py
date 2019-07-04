@@ -53,6 +53,15 @@ class userHelper():
             self.db.insert(
                 "INSERT INTO users_genres (fk_users, fk_genres) VALUES (%s, %s)", user_id, genre)
 
+    def updateUserInfos(self, user_id, username, password, age):
+        if password:
+            self.db.request(
+                "UPDATE users SET username = %s, password = %s, age = %s WHERE id = %s", username, password, age, user_id)
+        else:
+            self.db.request(
+                "UPDATE users SET username = %s, age = %s WHERE id = %s", username, age, user_id)
+        return self.getUserInformations(user_id=user_id)
+
     def getUserInformations(self, user_id=None, user_uuid=None):
         queryString = "SELECT * FROM users WHERE "
         if user_id:
