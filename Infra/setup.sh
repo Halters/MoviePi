@@ -3,7 +3,7 @@ echo "|     Installing Apache2, MariaDB and Python3 with PIP     |"
 echo "============================================================"
 read -r -p "Install Apache2, MariaDB and Python3 with PIP ? [y/N] " response
 response=${response,,}
-if [[ "$response" =~ ^(yes|y)$ ]]
+if [[ "$response" =~ ^(yes|y)$ ]]; then
     sudo apt install apache2 mariadb-server mariadb-client python3 python3-pip libapache2-mod-wsgi-py3 python3-venv
     echo "============================================================"
     echo "|      Restarting MariaDB service and starting config      |"
@@ -24,7 +24,7 @@ echo "|                Adding MoviePi to Database                |"
 echo "============================================================"
 read -r -p "Import moviepi database scheme to MySQL and create user moviepi_api with passsword moviepi_api ? [y/N] " response
 response=${response,,}
-if [[ "$response" =~ ^(yes|y)$ ]]
+if [[ "$response" =~ ^(yes|y)$ ]]; then
     mysql -u root -p -h localhost bar < ../DB/moviepi_api.sql
 fi
 echo "============================================================"
@@ -32,7 +32,7 @@ echo "|             Disabling Apache default website             |"
 echo "============================================================"
 read -r -p "Disable Apache2 default website ? [y/N] " response
 response=${response,,}
-if [[ "$response" =~ ^(yes|y)$ ]]
+if [[ "$response" =~ ^(yes|y)$ ]]; then
     sudo a2dissite 000-default
     sudo systemctl restart apache2.service
     sudo systemctl enable apache2.service
@@ -64,7 +64,7 @@ echo "|                  Installing PHPMyAdmin                   |"
 echo "============================================================"
 read -r -p "Install PHPMyAdmin ? [y/N] " response
 response=${response,,}
-if [[ "$response" =~ ^(yes|y)$ ]]
+if [[ "$response" =~ ^(yes|y)$ ]]; then
     sudo apt install phpmyadmin
     sudo apt autoremove
 fi
