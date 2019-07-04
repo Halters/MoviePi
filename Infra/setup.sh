@@ -35,8 +35,10 @@ echo "|          Installing Python depedencies for API           |"
 echo "============================================================"
 sudo pip3 install flask
 sudo pip3 install flask_restful
+sudo pip3 install flask_cors
 sudo pip3 install sqlalchemy
 sudo pip3 install pymysql
+sudo pip3 install pyjwt
 echo "============================================================"
 echo "|                  Setup script finished                   |"
 echo "============================================================"
