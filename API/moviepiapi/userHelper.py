@@ -68,6 +68,11 @@ class userHelper():
         userInfos = result[0]
         return userInfos
 
+    def getUserFilmsSeen(self, user_id):
+        queryString = "SELECT t1.id, t1.title FROM films AS t1 INNER JOIN users_films AS t2 ON t1.id = t2.fk_films WHERE t2.fk_users = %s"
+        result = self.db.request(queryString, user_id)
+        return result
+
     def getUserGenres(self, user_id):
         queryString = "SELECT t1.id, t1.name FROM genres AS t1 INNER JOIN users_genres AS t2 ON t1.id = t2.fk_genres WHERE t2.fk_users = %s"
         result = self.db.request(queryString, user_id)

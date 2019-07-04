@@ -6,7 +6,7 @@
 ##
 
 from flask_restful import Resource
-from utils import fill_return_packet, Key, userH, encode_auth_token, check_auth_token
+from moviepiapi.utils import fill_return_packet, Key, userH, encode_auth_token, check_auth_token
 from flask import request
 
 

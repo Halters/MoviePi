@@ -7,8 +7,8 @@
 
 import datetime
 import jwt
-from dbHelper import dbHelper
-from userHelper import userHelper
+from moviepiapi.dbHelper import dbHelper
+from moviepiapi.userHelper import userHelper
 
 ret_packet = {'responseStatus': 0, 'message': "", 'data': any}
 Key = 'MoviePiTheoAudreyHicham'
@@ -53,3 +53,13 @@ def check_auth_token(request):
     except jwt.InvalidTokenError:
         return False
     return False
+
+def make_average_weight(list):
+    result = 0.0
+    if not list:
+        return -1
+    for i in range (len(list)):
+        result = result + float(list[i])
+    result = result / len(list)
+    print(result)
+    return(result)
