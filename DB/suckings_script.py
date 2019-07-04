@@ -5,30 +5,34 @@ import requests
 import json
 import time
 from sqlalchemy import create_engine
+from enum import Enum
+ 
+class JOB(Enum):     
+    ACTOR = 1     
+    DIRECTOR = 2
+    UNKNOWN = 3
 
-
-def add_one_person(requ_str, api_key, conn, id):
+def add_one_person(requ_str, api_key, conn, id, job):
     resp = requests.get(requ_str + "/person/" + str(id) + api_key)
-        result = resp.json()
-        print(id)
-        id += 1
-        if (resp.status_code != 200):
-            print("Invalid url")
-            continue
-        print(result)
-        act_name = result["name"]
-        sql = "INSERT INTO actors(id_tmdb, name, bio, image) VALUES(" + \
-        str(result["id"]) + ",\"" + str(result["name"]).replace("\"", "'") + "\",\"" + \
-        str(result["biography"]).replace("\"", "'").replace("%", "%%") + "\",'" + \
-        str(result["profile_path"]) + "') "
-        if (result["known_for_department"] == "Acting"):
-            conn.execute(sql)
-        if (result["known_for_department"] == "Directing"):
-            conn.execute(sql.replace("actors(id_", "directors(id_"))
-        time.sleep(1)
+    result = resp.json()
+    print(id)
+    if (resp.status_code != 200):
+        print("Invalid url")
+        return
+    print(result)
+    act_name = result["name"]
+    sql = "INSERT INTO actors(id_tmdb, name, bio, image) VALUES(" + \
+    str(result["id"]) + ",\"" + str(result["name"]).replace("\"", "'") + "\",\"" + \
+    str(result["biography"]).replace("\"", "'").replace("%", "%%") + "\",'" + \
+    str(result["profile_path"]) + "') "
+    if (job == JOB.ACTOR):
+        conn.execute(sql)
+    elif (job == JOB.DIRECTOR):
+        conn.execute(sql.replace("actors(id_", "directors(id_"))
+    time.sleep(1)
 
 
-def update_films_directors(conn, result, crew, lines):
+def update_films_directors(conn, result, crew, lines, requ_str, api_key):
     sql = "INSERT INTO films_directors(fk_films, fk_directors) VALUES("
     if (lines):
         (max_id_movies,) = lines[0]
@@ -41,7 +45,7 @@ def update_films_directors(conn, result, crew, lines):
                 (id_actors,) = lines[0]
                 sql += str(id_actors) + ","
             else:
-                add_one_person(requ_str, api_key, conn, str(i["id"]))
+                add_one_person(requ_str, api_key, conn, str(i["id"]), JOB.DIRECTOR)
                 lines = conn.execute("SELECT id FROM directors WHERE id_tmdb = " + str(i["id"])).fetchall()
                 (id_actors,) = lines[0]
                 sql += str(id_actors) + ","
@@ -51,7 +55,7 @@ def update_films_directors(conn, result, crew, lines):
     conn.execute(sql)
 
 
-def update_films_actors(conn, result, cast, lines):
+def update_films_actors(conn, result, cast, lines, requ_str, api_key):
     sql = "INSERT INTO films_casting(fk_films, fk_actors) VALUES("
     if (lines):
         (max_id_movies,) = lines[0]
@@ -63,7 +67,7 @@ def update_films_actors(conn, result, cast, lines):
             (id_actors,) = lines[0]
             sql += str(id_actors) + ","
         else:
-            add_one_person(requ_str, api_key, conn, str(i["id"]))
+            add_one_person(requ_str, api_key, conn, str(i["id"]), JOB.ACTOR)
             lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = " + str(i["id"])).fetchall()
             (id_actors,) = lines[0]
             sql += str(id_actors) + ","
@@ -118,11 +122,11 @@ def update_movies(requ_str, api_key, conn, id):
         str(result["vote_average"]) + ",'" + \
         str(result["poster_path"]) + "') "
         conn.execute(sql)
-        time.sleep(1)
+        time.sleep(1)   
         lines = conn.execute("SELECT id FROM films ORDER BY id DESC LIMIT 1").fetchall()
         update_films_genres(conn, result, lines)
-        update_films_directors(conn, result, credits["crew"], lines)
-        update_films_actors(conn, result, credits["cast"], lines)
+        update_films_directors(conn, result, credits["crew"], lines, requ_str, api_key)
+        update_films_actors(conn, result, credits["cast"], lines, requ_str, api_key)
 
 
 # def update_casting(requ_str, api_key, conn, id):
@@ -131,7 +135,8 @@ def update_movies(requ_str, api_key, conn, id):
 #     latest = result["name"]
 
 #     while (act_name != latest):
-#         add_one_person(requ_str, api_key, conn, id)
+#         add_one_person(requ_str, api_key, conn, id, UNKNWOWN)
+#         id+=1
 
 
 def update_genres(requ_str, api_key, conn, id):
