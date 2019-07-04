@@ -14,6 +14,7 @@ from Username import Username
 from User import User
 from Genres import Genres
 from UserGenres import UserGenres
+from Suggestions import Suggestions
 
 app = Flask(__name__)
 api = Api(app)
@@ -31,6 +32,7 @@ api.add_resource(UserGenres, API_BASEURL +
                  'user/genres/<uuid>', API_BASEURL +
                  'user/genres')
 api.add_resource(Genres, API_BASEURL + 'genres')
+api.add_resource(Suggestions, API_BASEURL + 'suggestions')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')
