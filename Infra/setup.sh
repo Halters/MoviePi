@@ -47,6 +47,7 @@ sudo mkdir -p /var/www/FLASKAPPS/moviepiapi/
 cp ../API/moviepiapi/* /var/www/FLASKAPPS/moviepiapi/
 python3 -m venv /var/www/FLASKAPPS/moviepiapi/
 source /var/www/FLASKAPPS/moviepiapi/bin/activate
+pip3 install wheel
 pip install -r /var/www/FLASKAPPS/moviepiapi/requirements.txt
 deactivate
 cp ./moviepi.wsgi /var/www/FLASKAPPS/
