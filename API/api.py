@@ -14,6 +14,7 @@ from Username import Username
 from User import User
 from Genres import Genres
 from UserGenres import UserGenres
+from UserFilmsSeen import UserFilmsSeen
 
 app = Flask(__name__)
 api = Api(app)
@@ -30,6 +31,8 @@ api.add_resource(User, API_BASEURL + 'user')
 api.add_resource(UserGenres, API_BASEURL +
                  'user/genres/<uuid>', API_BASEURL +
                  'user/genres')
+api.add_resource(UserFilmsSeen, API_BASEURL +
+                 'user/filmsSeen')
 api.add_resource(Genres, API_BASEURL + 'genres')
 
 if __name__ == '__main__':
