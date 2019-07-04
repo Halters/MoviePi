@@ -20,6 +20,7 @@ from moviepiapi.User import User
 from moviepiapi.Username import Username
 from moviepiapi.Users import Users
 from moviepiapi.FilmsPage import FilmsPage
+from moviepiapi.UserComments import UserComments
 from flask_cors import CORS
 from flask_restful import Resource, Api
 from flask import Flask, request, jsonify
@@ -48,6 +49,7 @@ api.add_resource(Films, API_BASEURL + 'films/<film_id>')
 api.add_resource(FilmsPage, API_BASEURL + 'films/page/<page>')
 api.add_resource(Actor, API_BASEURL + 'actors')
 api.add_resource(Directors, API_BASEURL + 'directors')
+api.add_resource(UserComments, API_BASEURL + 'users/comment/<film_id>')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')
