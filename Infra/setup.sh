@@ -25,7 +25,7 @@ echo "============================================================"
 read -r -p "Import moviepi database scheme to MySQL and create user moviepi_api with passsword moviepi_api ? [y/N] " response
 response=${response,,}
 if [[ "$response" =~ ^(yes|y)$ ]]; then
-    mysql -u root -p -h localhost bar < ../DB/moviepi_api.sql
+    mysql -u root -p -h localhost < ../DB/moviepi_api.sql
 fi
 echo "============================================================"
 echo "|             Disabling Apache default website             |"
@@ -44,11 +44,12 @@ sudo a2enmod wsgi
 sudo cp ./flaskapi.com.conf /etc/apache2/sites-available/flaskapi.com.conf
 sudo a2ensite flaskapi.com.conf
 sudo mkdir -p /var/www/FLASKAPPS/moviepiapi/
+cp ../API/moviepiapi/* /var/www/FLASKAPPS/moviepiapi/
 python3 -m venv /var/www/FLASKAPPS/moviepiapi/
 source /var/www/FLASKAPPS/moviepiapi/bin/activate
-pip install -r requirements.txt
+pip3 install wheel
+pip install -r /var/www/FLASKAPPS/moviepiapi/requirements.txt
 deactivate
-cp ../API/moviepiapi/* /var/www/FLASKAPPS/moviepiapi/*
 cp ./moviepi.wsgi /var/www/FLASKAPPS/
 sudo mkdir -p /var/www/moviepiapi.com/logs/
 sudo chown -R www-data:www-data /var/www
