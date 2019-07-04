@@ -1,8 +1,8 @@
 ##
-## EPITECH PROJECT, 2019
-## MoviePi
-## File description:
-## dbHelper.py
+# EPITECH PROJECT, 2019
+# MoviePi
+# File description:
+# dbHelper.py
 ##
 
 from sqlalchemy import create_engine
