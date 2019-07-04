@@ -6,6 +6,10 @@
 # api.py
 ##
 
+import sys
+if __name__ == '__main__':
+    sys.path.insert(0, '../')
+
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS
@@ -16,6 +20,7 @@ from moviepiapi.Genres import Genres
 from moviepiapi.UserGenres import UserGenres
 from moviepiapi.UserFilmsSeen import UserFilmsSeen
 from moviepiapi.Suggestions import Suggestions
+
 
 app = Flask(__name__)
 api = Api(app)
