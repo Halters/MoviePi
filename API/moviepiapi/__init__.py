@@ -20,6 +20,9 @@ from moviepiapi.Genres import Genres
 from moviepiapi.UserGenres import UserGenres
 from moviepiapi.UserFilmsSeen import UserFilmsSeen
 from moviepiapi.Suggestions import Suggestions
+from moviepiapi.Films import Films
+from moviepiapi.Actor import Actor
+from moviepiapi.Directors import Directors
 
 
 app = Flask(__name__)
@@ -41,6 +44,9 @@ api.add_resource(UserFilmsSeen, API_BASEURL +
                  'user/filmsSeen')
 api.add_resource(Genres, API_BASEURL + 'genres')
 api.add_resource(Suggestions, API_BASEURL + 'suggestions')
+api.add_resource(Films, API_BASEURL + 'films')
+api.add_resource(Actor, API_BASEURL + 'actors')
+api.add_resource(Directors, API_BASEURL + 'directors')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')
