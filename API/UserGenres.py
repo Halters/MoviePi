@@ -7,7 +7,7 @@
 
 from flask_restful import Resource
 from flask import request
-from utils import fill_return_packet, userH
+from moviepiapi.utils import fill_return_packet, userH
 
 
 class UserGenres(Resource):

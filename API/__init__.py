@@ -9,13 +9,13 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from flask_cors import CORS
-from Users import Users
-from Username import Username
-from User import User
-from Genres import Genres
-from UserGenres import UserGenres
-from UserFilmsSeen import UserFilmsSeen
-from Suggestions import Suggestions
+from moviepiapi.Users import Users
+from moviepiapi.Username import Username
+from moviepiapi.User import User
+from moviepiapi.Genres import Genres
+from moviepiapi.UserGenres import UserGenres
+from moviepiapi.UserFilmsSeen import UserFilmsSeen
+from moviepiapi.Suggestions import Suggestions
 
 app = Flask(__name__)
 api = Api(app)

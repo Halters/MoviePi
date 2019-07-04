@@ -6,7 +6,7 @@
 ##
 
 from flask_restful import Resource
-from utils import fill_return_packet, Key, userH, encode_auth_token, check_auth_token, ret_packet, db, make_average_weight
+from moviepiapi.utils import fill_return_packet, Key, userH, encode_auth_token, check_auth_token, ret_packet, db, make_average_weight
 from flask import request
 
 class Suggestions(Resource):

@@ -1,12 +1,12 @@
 ##
-# EPITECH PROJECT, 2019
-# MoviePi
-# File description:
-# Genres.py
+## EPITECH PROJECT, 2019
+## MoviePi
+## File description:
+## Genres.py
 ##
 
 from flask_restful import Resource
-from utils import db, fill_return_packet
+from moviepiapi.utils import db, fill_return_packet
 
 
 class Genres(Resource):

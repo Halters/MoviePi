@@ -7,8 +7,8 @@
 
 import datetime
 import jwt
-from dbHelper import dbHelper
-from userHelper import userHelper
+from moviepiapi.dbHelper import dbHelper
+from moviepiapi.userHelper import userHelper
 
 ret_packet = {'responseStatus': 0, 'message': "", 'data': any}
 Key = 'MoviePiTheoAudreyHicham'
