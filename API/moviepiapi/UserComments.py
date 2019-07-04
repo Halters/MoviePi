@@ -78,3 +78,27 @@ class UserComments(Resource):
             else:
                 comment["fk_users"] = userInfos['username']
         return result
+
+    def delete(self, film_id):
+        uuid = check_auth_token(request)
+        if not uuid:
+            return fill_return_packet(0, "Token invalide", None)
+        packet = request.json
+        if not packet["id_comment"]:
+            return fill_return_packet(0, "Ce commentaire n'existe pas", None)
+        uuid_binary = userH.getUUIDBinaryFromStr(uuid)
+        userInfos = userH.getUserInformations(user_uuid=uuid_binary)
+        if not userInfos:
+            return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
+        db.request(
+            "DELETE FROM comments WHERE id = %s AND fk_users = %s AND fk_films = %s", packet["id_comment"], userInfos["id"], film_id)
+        result = db.request(
+            "SELECT * FROM comments WHERE fk_films = %s", film_id)
+        for comment in result:
+            userInfos = db.request(
+                "SELECT username FROM users WHERE id = %s", comment["fk_users"])
+            if not userInfos:
+                pass
+            else:
+                comment["fk_users"] = userInfos['username']
+        return result
