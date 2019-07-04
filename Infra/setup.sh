@@ -2,7 +2,7 @@ echo "============================================================"
 echo "|     Installing Apache2, MariaDB and Python3 with PIP     |"
 echo "============================================================"
 read -r -p "Install Apache2, MariaDB and Python3 with PIP ? [y/N] " response
-response=${response,,}    # tolower
+response=${response,,}
 if [[ "$response" =~ ^(yes|y)$ ]]
     sudo apt install apache2 mariadb-server mariadb-client python3 python3-pip libapache2-mod-wsgi-py3 python3-venv
     echo "============================================================"
@@ -23,7 +23,7 @@ echo "============================================================"
 echo "|                Adding MoviePi to Database                |"
 echo "============================================================"
 read -r -p "Import moviepi database scheme to MySQL and create user moviepi_api with passsword moviepi_api ? [y/N] " response
-response=${response,,}    # tolower
+response=${response,,}
 if [[ "$response" =~ ^(yes|y)$ ]]
     mysql -u root -p -h localhost bar < ../DB/moviepi_api.sql
 fi
@@ -31,7 +31,7 @@ echo "============================================================"
 echo "|             Disabling Apache default website             |"
 echo "============================================================"
 read -r -p "Disable Apache2 default website ? [y/N] " response
-response=${response,,}    # tolower
+response=${response,,}
 if [[ "$response" =~ ^(yes|y)$ ]]
     sudo a2dissite 000-default
     sudo systemctl restart apache2.service
@@ -53,7 +53,7 @@ pip install sqlalchemy
 pip install pymysql
 pip install pyjwt
 deactivate
-cp -r ../API/* /var/www/FLASKAPPS/moviepiapi/
+cp ../API/moviepiapi /var/www/FLASKAPPS/moviepiapi/
 cp ./moviepi.wsgi /var/www/FLASKAPPS/
 sudo mkdir -p /var/www/moviepiapi.com/logs/
 sudo chown -R www-data:www-data /var/www
@@ -68,7 +68,7 @@ echo "============================================================"
 echo "|                  Installing PHPMyAdmin                   |"
 echo "============================================================"
 read -r -p "Install PHPMyAdmin ? [y/N] " response
-response=${response,,}    # tolower
+response=${response,,}
 if [[ "$response" =~ ^(yes|y)$ ]]
     sudo apt install phpmyadmin
     sudo apt autoremove
