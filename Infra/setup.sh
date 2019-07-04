@@ -46,14 +46,9 @@ sudo a2ensite flaskapi.com.conf
 sudo mkdir -p /var/www/FLASKAPPS/moviepiapi/
 python3 -m venv /var/www/FLASKAPPS/moviepiapi/
 source /var/www/FLASKAPPS/moviepiapi/bin/activate
-pip install flask
-pip install flask_restful
-pip install flask_cors
-pip install sqlalchemy
-pip install pymysql
-pip install pyjwt
+pip install -r requirements.txt
 deactivate
-cp ../API/moviepiapi /var/www/FLASKAPPS/moviepiapi/
+cp ../API/moviepiapi/* /var/www/FLASKAPPS/moviepiapi/*
 cp ./moviepi.wsgi /var/www/FLASKAPPS/
 sudo mkdir -p /var/www/moviepiapi.com/logs/
 sudo chown -R www-data:www-data /var/www
