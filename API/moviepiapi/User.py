@@ -15,6 +15,7 @@ class User(Resource):
 
     def post(self):
         packet = request.json
+        print("TEST")
         userInfos = packet['userInfos']
         print(userInfos)
         username = userInfos['username']
