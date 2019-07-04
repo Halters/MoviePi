@@ -20,6 +20,16 @@ echo "|             Disabling Apache default website             |"
 echo "============================================================"
 sudo a2dissite 000-default
 echo "============================================================"
+echo "|                   Enabling API website                   |"
+echo "============================================================"
+sudo a2enmod wsgi
+sudo cp ./flaskapi.com.conf /etc/apache2/sites-available/flaskapi.com.conf
+sudo a2ensite flaskapi.com.conf
+sudo mkdir -p /var/www/FLASKAPPS/moviepiapi/
+cp -r ../API/* /var/www/FLASKAPPS/moviepiapi/
+sudo mkdir -p /var/www/moviepiapi.com/logs/
+sudp chown -R www-data:www-data /var/www
+echo "============================================================"
 echo "|         Restarting PHP7.2-FPM, Apache2 services          |"
 echo "============================================================"
 sudo systemctl restart php7.2-fpm.service
