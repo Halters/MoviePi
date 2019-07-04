@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "============================================================"
 echo "|     Installing Apache2, MariaDB and Python3 with PIP     |"
 echo "============================================================"
@@ -72,3 +73,12 @@ fi
 echo "============================================================"
 echo "|                  Setup script finished                   |"
 echo "============================================================"
+echo "============================================================"
+echo "|          Running AutoUpdate Script for Database          |"
+echo "============================================================"
+echo "This script must be run contiuously, it is situated in :"
+echo "      MoviePi/DB/suckings_script.py"
+echo "You can use the package 'screen' to do so :"
+echo "      apt install screen"
+echo "      cd ../DB"
+echo "      screen -d -m \"python3 suckings_script.py\""
