@@ -11,6 +11,7 @@ from flask import request
 
 
 class Actor(Resource):
+
     def get(self, actor_id):
         result = db.request("SELECT * from actors where id=%s", actor_id)
         if not result:

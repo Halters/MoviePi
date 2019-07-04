@@ -48,10 +48,10 @@ class userHelper():
         return self.getUserInformations(user_id=insert_id)
 
     def setUserGenres(self, user_id, newGenres):
-        self.db.request("DELETE FROM users_genres WHERE id = %s", user_id)
+        self.db.request("DELETE FROM users_genres WHERE fk_users = %s", user_id)
         for genre in newGenres:
             self.db.insert(
-                "INSERT INTO users_genres (fk_users, fk_genres) VALUES (%s, %s)", user_id, genre)
+                "INSERT INTO users_genres (fk_users, fk_genres, weight) VALUES (%s, %s, 1)", user_id, genre)
 
     def updateUserInfos(self, user_id, username, password, age):
         if password:

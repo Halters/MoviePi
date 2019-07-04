@@ -10,6 +10,7 @@ import sys
 if __name__ == '__main__':
     sys.path.insert(0, '../')
 from moviepiapi.Directors import Directors
+<<<<<<< Updated upstream
 from moviepiapi.Actor import Actor
 from moviepiapi.Films import Films
 from moviepiapi.Suggestions import Suggestions
@@ -24,6 +25,12 @@ from moviepiapi.UserComments import UserComments
 from flask_cors import CORS
 from flask_restful import Resource, Api
 from flask import Flask, request, jsonify
+=======
+from moviepiapi.CastingList import CastingList
+from moviepiapi.ActorDetails import ActorDetails
+from moviepiapi.CrewDetails import CrewDetails
+from moviepiapi.CrewList import CrewList
+>>>>>>> Stashed changes
 
 
 app = Flask(__name__)
@@ -49,7 +56,14 @@ api.add_resource(Films, API_BASEURL + 'films/<film_id>')
 api.add_resource(FilmsPage, API_BASEURL + 'films/page/<page>')
 api.add_resource(Actor, API_BASEURL + 'actors')
 api.add_resource(Directors, API_BASEURL + 'directors')
+<<<<<<< Updated upstream
 api.add_resource(UserComments, API_BASEURL + 'users/comment/<film_id>')
+=======
+api.add_resource(CastingList, API_BASEURL + 'castinglist/<film_id>')
+api.add_resource(ActorDetails, API_BASEURL + 'actordetails/<actor_id>')
+api.add_resource(CrewList, API_BASEURL + 'crewlist/<film_id>')
+api.add_resource(CrewDetails, API_BASEURL + 'crewdetails/<crew_id>')
+>>>>>>> Stashed changes
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')
