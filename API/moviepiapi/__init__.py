@@ -6,23 +6,22 @@
 # api.py
 ##
 
+from moviepiapi.Directors import Directors
+from moviepiapi.Actor import Actor
+from moviepiapi.Films import Films
+from moviepiapi.Suggestions import Suggestions
+from moviepiapi.UserFilmsSeen import UserFilmsSeen
+from moviepiapi.UserGenres import UserGenres
+from moviepiapi.Genres import Genres
+from moviepiapi.User import User
+from moviepiapi.Username import Username
+from moviepiapi.Users import Users
+from flask_cors import CORS
+from flask_restful import Resource, Api
+from flask import Flask, request, jsonify
 import sys
 if __name__ == '__main__':
     sys.path.insert(0, '../')
-
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
-from flask_cors import CORS
-from moviepiapi.Users import Users
-from moviepiapi.Username import Username
-from moviepiapi.User import User
-from moviepiapi.Genres import Genres
-from moviepiapi.UserGenres import UserGenres
-from moviepiapi.UserFilmsSeen import UserFilmsSeen
-from moviepiapi.Suggestions import Suggestions
-from moviepiapi.Films import Films
-from moviepiapi.Actor import Actor
-from moviepiapi.Directors import Directors
 
 
 app = Flask(__name__)
@@ -44,7 +43,7 @@ api.add_resource(UserFilmsSeen, API_BASEURL +
                  'user/filmsSeen')
 api.add_resource(Genres, API_BASEURL + 'genres')
 api.add_resource(Suggestions, API_BASEURL + 'suggestions')
-api.add_resource(Films, API_BASEURL + 'films')
+api.add_resource(Films, API_BASEURL + 'films/<film_id>')
 api.add_resource(Actor, API_BASEURL + 'actors')
 api.add_resource(Directors, API_BASEURL + 'directors')
 
