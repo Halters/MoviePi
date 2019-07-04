@@ -7,6 +7,27 @@ import time
 from sqlalchemy import create_engine
 
 
+def add_one_person(requ_str, api_key, conn, id):
+    resp = requests.get(requ_str + "/person/" + str(id) + api_key)
+        result = resp.json()
+        print(id)
+        id += 1
+        if (resp.status_code != 200):
+            print("Invalid url")
+            continue
+        print(result)
+        act_name = result["name"]
+        sql = "INSERT INTO actors(id_tmdb, name, bio, image) VALUES(" + \
+        str(result["id"]) + ",\"" + str(result["name"]).replace("\"", "'") + "\",\"" + \
+        str(result["biography"]).replace("\"", "'").replace("%", "%%") + "\",'" + \
+        str(result["profile_path"]) + "') "
+        if (result["known_for_department"] == "Acting"):
+            conn.execute(sql)
+        if (result["known_for_department"] == "Directing"):
+            conn.execute(sql.replace("actors(id_", "directors(id_"))
+        time.sleep(1)
+
+
 def update_films_directors(conn, result, crew, lines):
     sql = "INSERT INTO films_directors(fk_films, fk_directors) VALUES("
     if (lines):
@@ -15,8 +36,13 @@ def update_films_directors(conn, result, crew, lines):
     sql += ",\""
     for i in crew:
         if (i["department"] == "Directing"):
-            lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = " + str(i["id"])).fetchall()
+            lines = conn.execute("SELECT id FROM directors WHERE id_tmdb = " + str(i["id"])).fetchall()
             if (lines):
+                (id_actors,) = lines[0]
+                sql += str(id_actors) + ","
+            else:
+                add_one_person(requ_str, api_key, conn, str(i["id"]))
+                lines = conn.execute("SELECT id FROM directors WHERE id_tmdb = " + str(i["id"])).fetchall()
                 (id_actors,) = lines[0]
                 sql += str(id_actors) + ","
     if (sql[-1] == ','):
@@ -34,6 +60,11 @@ def update_films_actors(conn, result, cast, lines):
     for i in cast:
         lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = " + str(i["id"])).fetchall()
         if (lines):
+            (id_actors,) = lines[0]
+            sql += str(id_actors) + ","
+        else:
+            add_one_person(requ_str, api_key, conn, str(i["id"]))
+            lines = conn.execute("SELECT id FROM actors WHERE id_tmdb = " + str(i["id"])).fetchall()
             (id_actors,) = lines[0]
             sql += str(id_actors) + ","
     if (sql[-1] == ','):
@@ -94,30 +125,13 @@ def update_movies(requ_str, api_key, conn, id):
         update_films_actors(conn, result, credits["cast"], lines)
 
 
-def update_casting(requ_str, api_key, conn, id):
-    act_name = ""
-    result = requests.get(requ_str + "/person/latest" + api_key).json()
-    latest = result["name"]
+# def update_casting(requ_str, api_key, conn, id):
+#     act_name = ""
+#     result = requests.get(requ_str + "/person/latest" + api_key).json()
+#     latest = result["name"]
 
-    while (act_name != latest):
-        resp = requests.get(requ_str + "/person/" + str(id) + api_key)
-        result = resp.json()
-        print(id)
-        id += 1
-        if (resp.status_code != 200):
-            print("Invalid url")
-            continue
-        print(result)
-        act_name = result["name"]
-        sql = "INSERT INTO actors(id_tmdb, name, bio, image) VALUES(" + \
-        str(result["id"]) + ",\"" + str(result["name"]).replace("\"", "'") + "\",\"" + \
-        str(result["biography"]).replace("\"", "'").replace("%", "%%") + "\",'" + \
-        str(result["profile_path"]) + "') "
-        if (result["known_for_department"] == "Acting"):
-            conn.execute(sql)
-        if (result["known_for_department"] == "Directing"):
-            conn.execute(sql.replace("actors(id_", "directors(id_"))
-        time.sleep(1)
+#     while (act_name != latest):
+#         add_one_person(requ_str, api_key, conn, id)
 
 
 def update_genres(requ_str, api_key, conn, id):
@@ -143,13 +157,13 @@ def get_tag_list():
     if (lines):
         (max_id_genres,) = lines[0]
     update_genres(requ_str, api_key, conn, max_id_genres)
-    lines = conn.execute("SELECT id_tmdb FROM actors ORDER BY id_tmdb DESC LIMIT 1").fetchall()
-    if (lines):
-        (max_id_actors,) = lines[0]
-    lines = conn.execute("SELECT id_tmdb FROM directors ORDER BY id_tmdb DESC LIMIT 1").fetchall()
-    if (lines):
-        (max_id_directors,) = lines[0]
-    update_casting(requ_str, api_key, conn, max(max_id_actors, max_id_directors) + 1)
+    # lines = conn.execute("SELECT id_tmdb FROM actors ORDER BY id_tmdb DESC LIMIT 1").fetchall()
+    # if (lines):
+    #     (max_id_actors,) = lines[0]
+    # lines = conn.execute("SELECT id_tmdb FROM directors ORDER BY id_tmdb DESC LIMIT 1").fetchall()
+    # if (lines):
+    #     (max_id_directors,) = lines[0]
+    # update_casting(requ_str, api_key, conn, max(max_id_actors, max_id_directors) + 1)
     lines = conn.execute("SELECT id_tmdb FROM films ORDER BY id_tmdb DESC LIMIT 1").fetchall()
     if (lines):
         (max_id_movies,) = lines[0]
