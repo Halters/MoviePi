@@ -12,3 +12,4 @@ source /var/www/FLASKAPPS/moviepiapi/bin/activate
 pip install -r /var/www/FLASKAPPS/moviepiapi/requirements.txt
 deactivate
 sudo chown -R www-data:www-data /var/www/FLASKAPPS
+sudo service apache2 restart
