@@ -37,6 +37,13 @@ export class FilmdetailsPage implements AfterContentInit {
       comment: ['', [Validators.required]]
     });
     this.user = this.authService.user;
+    this.apiRequests
+      .getRateUser(this.id)
+      .subscribe(async (res: ApiResponse) => {
+        if (res && res.data) {
+          this.userRate = res.data.rating;
+        }
+      });
   }
 
   ngAfterContentInit() {

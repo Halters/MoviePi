@@ -46,6 +46,12 @@ export class ApiRequestsService {
     );
   }
 
+  getRateUser(id: number): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}usernote/${id}`
+    );
+  }
+
   getFilmsSeen(): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(
       `${this.API_SERVER_ADDRESS}user/filmsSeen`
