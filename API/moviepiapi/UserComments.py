@@ -90,7 +90,7 @@ class UserComments(Resource):
         if not userInfos:
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
         db.request(
-            "DELETE FROM comments WHERE id = %s AND fk_users = %s", film_id, userInfos["id"])
+            "DELETE FROM comments WHERE id = %s", film_id)
         result = db.request(
             "SELECT * FROM comments WHERE fk_films = %s", film_id)
         for comment in result:
