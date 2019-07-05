@@ -51,4 +51,22 @@ export class ApiRequestsService {
       `${this.API_SERVER_ADDRESS}checkUsername/${username}`
     );
   }
+
+  updatePreferences({
+    uuid,
+    username,
+    age,
+    password
+  }: {
+    uuid: string;
+    username: string;
+    age: number;
+    password?: string;
+  }): Observable<ApiResponse> {
+    const packet = { uuid, username, age, password };
+    return this.httpClient.patch<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}user/settings`,
+      packet
+    );
+  }
 }
