@@ -67,7 +67,6 @@ export class FilmdetailsPage implements AfterContentInit {
 
   rate(index: number) {
     this.userRate = index;
-
     this.apiRequests
       .updateRate(this.id, index)
       .subscribe(async (res: ApiResponse) => {});
@@ -132,6 +131,8 @@ export class FilmdetailsPage implements AfterContentInit {
         console.log(res);
         if (res && res.data) {
           this.comments = res.data as Comments[];
+        } else if (res && !res.data) {
+          this.comments = null;
         }
       });
     this.user = this.authService.user;
@@ -141,9 +142,7 @@ export class FilmdetailsPage implements AfterContentInit {
     this.apiRequests
       .deleteComment(commentId)
       .subscribe(async (res: ApiResponse) => {
-        if (res && res.data) {
-          this.comments = res.data as Comments[];
-        }
+        this.getComments();
       });
   }
 
