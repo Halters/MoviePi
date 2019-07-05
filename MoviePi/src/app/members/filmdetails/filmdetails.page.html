@@ -3,33 +3,87 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ title }}</ion-title>
+    <ion-title>{{ filmDetails?.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-img [src]="image"></ion-img>
+<ion-content *ngIf="filmDetails">
+  <ion-img
+    src="{{
+      filmDetails.image !== 'None'
+        ? TMDB_IMAGE_URL + filmDetails.image
+        : NO_IMAGE
+    }}"
+  ></ion-img>
+  <ion-item>
+    <ion-label>Votre note:</ion-label>
+    <ion-icon
+      name="star"
+      *ngFor="let num of [1, 2, 3, 4, 5]"
+      (click)="rate(num)"
+      [ngStyle]="{ color: getColor(num) }"
+      slot="end"
+    ></ion-icon>
+  </ion-item>
   <ion-list>
     <ion-item lines="full">
       <ion-label>Film vu</ion-label>
-      <ion-checkbox slot="start" [(ngModel)]="isChecked"></ion-checkbox>
-      <ion-icon
-        name="star"
-        *ngFor="let num of [1, 2, 3, 4, 5]"
-        (click)="rate(num)"
-        [ngStyle]="{ color: getColor(num) }"
-        slot="end"
-      ></ion-icon>
+      <ion-checkbox
+        slot="start"
+        [(ngModel)]="isChecked"
+        (click)="checkboxClicked($event)"
+        [disabled]="disabled"
+      ></ion-checkbox>
     </ion-item>
     <ion-item lines="none">
-      <ion-label>Synopsis:</ion-label>
+      <h3>Synopsis:</h3>
     </ion-item>
     <ion-item lines="none">
-      <ion-text>{{ overview }}</ion-text>
+      <ion-text>{{ filmDetails.overview }}</ion-text>
     </ion-item>
     <ion-item lines="none">
       <ion-icon slot="start" name="calendar"></ion-icon>
-      <ion-label>Date de réalisation: {{ releaseDate }} </ion-label>
+      <ion-label
+        >Date de réalisation: {{ filmDetails.release_date }}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label> Note globale: </ion-label>
+      <ion-icon
+        name="star"
+        *ngFor="let num of [1, 2, 3, 4, 5]"
+        [ngStyle]="{ color: getColorGlobal(num) }"
+        slot="end"
+      ></ion-icon>
     </ion-item>
   </ion-list>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Ajouter un commentaire</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form [formGroup]="submitCommentForm">
+        <ion-textarea formControlName="comment"></ion-textarea>
+      </form>
+    </ion-card-content>
+
+    <ion-footer>
+      <ion-button (click)="save()">Ajouter</ion-button>
+    </ion-footer>
+  </ion-card>
+
+  <ion-card *ngFor="let com of comments">
+    <ion-card-header>
+      <ion-card-subtitle>{{ com.username }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{ com.comment }}
+    </ion-card-content>
+
+    <ion-footer *ngIf="user.username == com.username">
+      <ion-button color="danger" (click)="delete(com.id)">Supprimer</ion-button>
+    </ion-footer>
+  </ion-card>
 </ion-content>

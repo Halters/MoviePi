@@ -1,38 +1,83 @@
+import { Comments } from './../../interfaces/comments';
+import { User } from './../../interfaces/user';
+import { FilmDetails } from 'src/app/interfaces/film';
 import { ColorsStars } from './../../enums/colors-stars.enum';
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, AfterContentInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ApiRequestsService } from './../../services/api-requests.service';
+import { ApiResponse } from './../../interfaces/api-response';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-filmdetails',
   templateUrl: './filmdetails.page.html',
   styleUrls: ['./filmdetails.page.scss']
 })
-export class FilmdetailsPage implements OnInit {
+export class FilmdetailsPage implements AfterContentInit {
+  filmDetails: FilmDetails = undefined;
   id = null;
+  comments: Comments[];
   isChecked = false;
-  rating = 5;
-  ratingChange: EventEmitter<number>;
-  title = 'Ariel';
-  image = 'https://image.tmdb.org/t/p/w500/w0NzAc4Lv6euPtPAmsdEf0ZCF8C.jpg';
-  releaseDate = '1988-10-21';
-  overview =
-    'Salla, petite ville minière de la Laponie. Taisto Kasurinen, mineur, hérite d\'une \'belle américaine\' après le suicide de son propriétaire. Il retire toute ses économies de la banque et part à Helsinki. La capitale l\'accueille froidement : il se fait voler son argent et se retrouve en prison. Cependant il a eu le temps de rencontrer Irmeli, jeune femme débordée, et son petit garçon. Ils réussiront a faire évader Taisto. Poursuivis par la police, ils sont bien décidés a tout faire pour s\'en sortir.';
+  disabled = false;
+  filmsSeen;
+  userRate = 0;
+  TMDB_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+  NO_IMAGE = 'assets/image-not-found.jpg';
+  user: User;
+  submitCommentForm: FormGroup;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(this.id);
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private apiRequests: ApiRequestsService,
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder
+  ) {
+    this.submitCommentForm = this.formBuilder.group({
+      comment: ['', [Validators.required]]
+    });
+    this.user = this.authService.user;
   }
+
+  ngAfterContentInit() {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.apiRequests
+      .getFilmDetails(this.id)
+      .subscribe(async (res: ApiResponse) => {
+        if (res && res.data) {
+          this.filmDetails = res.data[0];
+          this.filmDetails.rating = Math.round(this.filmDetails.rating / 2);
+          this.getComments();
+          this.initializeFilmsSeen();
+        }
+      });
+  }
+
+  initializeFilmsSeen() {
+    this.apiRequests.getFilmsSeen().subscribe(async (res: ApiResponse) => {
+      this.filmsSeen = res.data;
+      for (const film of this.filmsSeen) {
+        if (film.title === this.filmDetails.title) {
+          this.isChecked = true;
+          this.disabled = true;
+        }
+      }
+    });
+  }
+
   rate(index: number) {
-    console.log(index);
+    this.userRate = index;
+
+    this.apiRequests
+      .updateRate(this.id, index)
+      .subscribe(async (res: ApiResponse) => {});
   }
 
   getColor(index: number) {
     if (this.isAboveRating(index)) {
       return ColorsStars.GREY;
     }
-    switch (this.rating) {
+    switch (this.userRate) {
       case 1:
       case 2:
         return ColorsStars.RED;
@@ -46,7 +91,77 @@ export class FilmdetailsPage implements OnInit {
     }
   }
 
+  getColorGlobal(index: number) {
+    if (this.isAboveRatingGlobal(index)) {
+      return ColorsStars.GREY;
+    }
+    switch (this.filmDetails.rating) {
+      case 1:
+      case 2:
+        return ColorsStars.RED;
+      case 3:
+        return ColorsStars.YELLOW;
+      case 4:
+      case 5:
+        return ColorsStars.GREEN;
+      default:
+        return ColorsStars.GREY;
+    }
+  }
+  isAboveRatingGlobal(index: number): boolean {
+    return index > this.filmDetails.rating;
+  }
+
   isAboveRating(index: number): boolean {
-    return index > this.rating;
+    return index > this.userRate;
+  }
+
+  checkboxClicked(event) {
+    if (!this.disabled) {
+      this.apiRequests
+        .updateFilmsSeen(this.id)
+        .subscribe(async (res: ApiResponse) => {});
+      this.disabled = true;
+    }
+  }
+
+  getComments() {
+    this.apiRequests
+      .getComments(this.filmDetails.id)
+      .subscribe(async (res: ApiResponse) => {
+        console.log(res);
+        if (res && res.data) {
+          this.comments = res.data as Comments[];
+        }
+      });
+    this.user = this.authService.user;
+  }
+
+  delete(commentId: number) {
+    this.apiRequests
+      .deleteComment(commentId)
+      .subscribe(async (res: ApiResponse) => {
+        if (res && res.data) {
+          this.comments = res.data as Comments[];
+        }
+      });
+  }
+
+  edit() {}
+
+  save() {
+    if (this.submitCommentForm.valid) {
+      this.apiRequests
+        .postComment(
+          this.filmDetails.id,
+          this.submitCommentForm.get('comment').value
+        )
+        .subscribe(async (res: ApiResponse) => {
+          if (res && res.data) {
+            this.comments = res.data as Comments[];
+            this.submitCommentForm.get('comment').setValue('');
+          }
+        });
+    }
   }
 }

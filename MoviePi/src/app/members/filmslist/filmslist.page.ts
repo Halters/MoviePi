@@ -51,7 +51,6 @@ export class FilmslistPage implements OnInit {
         if (res && res.data) {
           this.films = res.data;
           this.displayFilms = this.films.slice(0);
-          console.log(this.films);
         }
       });
   }

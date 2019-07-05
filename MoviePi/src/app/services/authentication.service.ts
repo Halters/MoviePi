@@ -52,7 +52,6 @@ export class AuthenticationService {
       if (res.data) {
         const data = res.data as AuthResponse;
         await this.storage.set(TOKEN_KEY, data.JWT);
-        console.log(data);
         this.user = data.userInfos;
         this.authenticationState.next(true);
       }
