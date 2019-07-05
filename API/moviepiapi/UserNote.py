@@ -1,8 +1,8 @@
 ##
-## EPITECH PROJECT, 2019
-## MoviePi
-## File description:
-## UserNote.py
+# EPITECH PROJECT, 2019
+# MoviePi
+# File description:
+# UserNote.py
 ##
 
 from flask_restful import Resource
@@ -13,6 +13,8 @@ from flask import request
 #                               USER NOTE                                     #
 #                    DOC : DOCUMENTATION/USERNOTE.MD                          #
 ###############################################################################
+
+
 class UserNote(Resource):
     def patch(self, film_id, note):
         user_uuid = check_auth_token(request)
@@ -24,9 +26,10 @@ class UserNote(Resource):
         user = userH.getUserInformations(user_uuid=uuid_binary)
         if not user:
             return fill_return_packet(0, "Compte inexistant", None)
-        result = db.request("INSERT INTO users_ratings (fk_users, fk_films, rating) VALUES (%s, %s, %s)", user['id'], film_id, note)
-        checker = db.request("SELECT * FROM users_ratings WHERE id=%s AND fk_films=%s", user['id'], film_id)
-        print(checker)
+        db.insert("INSERT INTO users_ratings (fk_users, fk_films, rating) VALUES (%s, %s, %s)",
+                  user['id'], film_id, note)
+        checker = db.request(
+            "SELECT * FROM users_ratings WHERE fk_users=%s AND fk_films=%s", user['id'], film_id)
         if not checker:
             return fill_return_packet(0, "L'ajout des données a la DB a échoué", None)
         if (adjust_weight_user(film_id, note, int(user['id'])) == False):

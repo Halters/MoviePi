@@ -31,12 +31,8 @@ class Users(Resource):
 
     def post(self):
         packet = request.json
-<<<<<<< Updated upstream
         if not packet or not packet["username"] or not packet["password"]:
             return fill_return_packet(0, "Nom d'utilisateur ou mot de passe invalide", None)
-=======
-        print(packet)
->>>>>>> Stashed changes
         username = str(packet["username"])
         password = str(packet["password"])
         user = userH.getUserForAuth(username, password)
