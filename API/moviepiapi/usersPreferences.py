@@ -31,6 +31,7 @@ class usersPreferences(Resource):
             user["id"], user["username"], password, age)
         if not user:
             return fill_return_packet(0, "Une erreur est survenue", None)
+        user["uuid"] = userH.getUUIDstrFromBinary(user["uuid"])
         self.data_informations["JWT"] = encode_auth_token(user["uuid"])
         del user["id"]
         self.data_informations["userInfos"] = user
