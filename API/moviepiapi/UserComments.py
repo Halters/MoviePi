@@ -91,13 +91,4 @@ class UserComments(Resource):
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
         db.request(
             "DELETE FROM comments WHERE id = %s", film_id)
-        result = db.request(
-            "SELECT * FROM comments WHERE fk_films = %s", film_id)
-        for comment in result:
-            userInfos = db.request(
-                "SELECT username FROM users WHERE id = %s", comment["fk_users"])
-            if not userInfos:
-                pass
-            else:
-                comment["username"] = userInfos['username']
-        return fill_return_packet(1, "OK", result)
+        return fill_return_packet(1, "OK", None)
