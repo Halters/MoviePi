@@ -3,8 +3,6 @@ import { ApiResponse } from './../../interfaces/api-response';
 import { ApiRequestsService } from './../../services/api-requests.service';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { Film } from 'src/app/interfaces/film';
-import { NavController } from 'ionic-angular';
-
 import { FormControl } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import 'rxjs/add/operator/debounceTime';
@@ -71,9 +69,7 @@ export class FilmslistPage implements OnInit {
         if (!rep.data) {
           this.infiniteScroll.disabled = true;
         } else {
-          console.log(this.films);
           this.films = this.films + rep.data;
-          console.log(this.films);
           this.displayFilms = this.films.slice(0);
         }
         this.infiniteScroll.complete();
@@ -85,11 +81,19 @@ export class FilmslistPage implements OnInit {
     this.actualPage = 0;
     if (value === 0) {
       this.initializeFilms();
+    } else {
+      this.apiRequests.getFilmsFromPage(value).subscribe(rep => {
+        if (rep && rep.data) {
+          this.films = rep.data as Film[];
+          this.displayFilms = this.films.slice(0);
+        }
+      });
     }
   }
 
   cancelSearch() {
     this.displayFilms = this.films.slice(0);
+    this.searchOpen = false;
   }
 
   onSearchInput() {
@@ -103,12 +107,8 @@ export class FilmslistPage implements OnInit {
   setFilteredItems() {
     if (this.films) {
       this.searchData = this.films.slice(0);
-      this.searchData = this.filterItems(this.searchTerm);
-      if (this.searchData.length !== 0) {
-        this.displayFilms = this.searchData.slice(0);
-      }
-      console.log(this.displayFilms);
-      console.log(this.films);
+      this.searchData = this.filterItems(this.searchTerm).slice(0);
+      this.displayFilms = this.searchData.slice(0);
     }
   }
 
@@ -118,7 +118,7 @@ export class FilmslistPage implements OnInit {
     if (!searchTerm) {
       this.infiniteScroll.disabled = false;
       this.displayFilms = this.films.slice(0);
-      return [];
+      return this.displayFilms;
     }
     return data.filter(film => {
       return film.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
