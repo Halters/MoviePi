@@ -59,8 +59,7 @@ class Suggestions(Resource):
         result = db.request(cmd)
         for i in range(len(result)):
             del result[i]['id_tmdb']
-        isAdult = db.request("SELECT age FROM users WHERE id=%s", user['age'])
-        if not isAdult:
+        if not user['age']:
             return fill_return_packet(0, "Ce compte n'a pas d'age", None)
         for i in range(len(result)):
             if (result[i]['adult'] == 1 and int(isAdult[0]['age']) < 18):
