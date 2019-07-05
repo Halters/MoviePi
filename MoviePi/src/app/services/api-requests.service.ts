@@ -52,6 +52,12 @@ export class ApiRequestsService {
     );
   }
 
+  getSuggestions(): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}suggestions`
+    );
+  }
+
   updatePreferences({
     uuid,
     username,
