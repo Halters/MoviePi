@@ -29,10 +29,7 @@ from moviepiapi.UserGenres import UserGenres
 from moviepiapi.Username import Username
 from moviepiapi.Users import Users
 from moviepiapi.usersPreferences import usersPreferences
-from moviepiapi.CrewList import CrewList
-from moviepiapi.CrewDetails import CrewDetails
-from moviepiapi.CastingList import CastingList
-from moviepiapi.ActorDetails import ActorDetails
+from moviepiapi.UserNote import UserNote
 
 ###############################################################################
 #                               IMPORT SYSTEM                                 #
@@ -65,12 +62,17 @@ api.add_resource(Genres, API_BASEURL + 'genres')
 api.add_resource(Suggestions, API_BASEURL + 'suggestions')
 api.add_resource(Films, API_BASEURL + 'films/<film_id>')
 api.add_resource(FilmsPage, API_BASEURL + 'films/page/<page>')
+<<<<<<< Updated upstream
 api.add_resource(FilmsPageGenre, API_BASEURL + 'films/page/<page>/<genre>')
 api.add_resource(CastingList, API_BASEURL + 'castinglist/<film_id>')
 api.add_resource(ActorDetails, API_BASEURL + 'actordetails/<actor_id>')
 api.add_resource(CrewList, API_BASEURL + 'crewlist/<film_id>')
 api.add_resource(CrewDetails, API_BASEURL + 'crewdetails/<crew_id>')
 api.add_resource(UserComments, API_BASEURL + 'users/comment/<film_id>')
+=======
+api.add_resource(UserComments, API_BASEURL + 'users/comment/<film_id>')
+api.add_resource(UserNote, API_BASEURL + 'usernote/<film_id> <note>')
+>>>>>>> Stashed changes
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')

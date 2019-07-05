@@ -64,3 +64,32 @@ def make_average_weight(list):
     result = result / len(list)
     print(result)
     return(result)
+
+def adjust_weight_user(film_id, note, id_user):
+    weight_list = []
+    idgenre_list = []
+    already_genre = []
+    all_genre_user = []
+    new_weight = []
+    result = db.request("SELECT fk_genres FROM films_genres WHERE id=%s", str(film_id))
+    print(result)
+    if not result:
+        return fill_return_packet(0, "Pas genres trouvés pour ce film", None)
+    for i in range(len(result)):
+        idgenre_list.append(result[i]['fk_genres'])
+    result_user = db.request("SELECT fk_genres, weight FROM users_genres WHERE id=%s", str(id_user))
+    print(result_user)
+    if not result_user:
+        return False
+    for i in range(len(result_user)):
+        already_genre.append(result_user[i]['fk_genres'])
+    final_list = list(set(idgenre_list).union(set(already_genre)))
+    for i in range(len(final_list)):
+        for y in range(len(result)):
+            if final_list[i] == result_user[y]['fk_genres']:
+                new_weight.append((int(result_user[i]['weight']) / len(final_list)) * int(note))
+            else:
+                new_weight.append(1)
+    print(new_weight)
+    return True
+
