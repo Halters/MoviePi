@@ -23,7 +23,7 @@ class UserComments(Resource):
                 pass
             else:
                 comment["fk_users"] = userInfos['username']
-        return result
+        return fill_return_packet(1, "OK", result)
 
     def post(self, film_id):
         uuid = check_auth_token(request)
@@ -39,7 +39,7 @@ class UserComments(Resource):
         result = db.insert(
             "INSERT INTO comments (fk_users, fk_films, comment) VALUES (%s, %s, %s)", film_id, userInfos["id"], packet["comment"])
         if not result:
-            return fill_return_packet(1, "Une erreur est survenue", None)
+            return fill_return_packet(0, "Une erreur est survenue", None)
         result = db.request(
             "SELECT * FROM comments WHERE fk_films = %s", film_id)
         for comment in result:
@@ -49,7 +49,7 @@ class UserComments(Resource):
                 pass
             else:
                 comment["fk_users"] = userInfos['username']
-        return result
+        return fill_return_packet(1, "OK", result)
 
     def update(self, film_id):
         uuid = check_auth_token(request)
@@ -77,7 +77,7 @@ class UserComments(Resource):
                 pass
             else:
                 comment["fk_users"] = userInfos['username']
-        return result
+        return fill_return_packet(1, "OK", result)
 
     def delete(self, film_id):
         uuid = check_auth_token(request)
@@ -101,4 +101,4 @@ class UserComments(Resource):
                 pass
             else:
                 comment["fk_users"] = userInfos['username']
-        return result
+        return fill_return_packet(1, "OK", result)

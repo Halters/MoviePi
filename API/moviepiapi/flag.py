@@ -1,9 +1,10 @@
 ##
-## EPITECH PROJECT, 2018
-## api_gateway
-## File description:
-## flag.py
+# EPITECH PROJECT, 2018
+# api_gateway
+# File description:
+# flag.py
 ##
+
 
 class Flag(object):
     flag_name = ""

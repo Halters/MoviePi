@@ -1,13 +1,14 @@
 ##
-## EPITECH PROJECT, 2019
-## MoviePi
-## File description:
-## CrewDetails.py
+# EPITECH PROJECT, 2019
+# MoviePi
+# File description:
+# CrewDetails.py
 ##
 
 from flask_restful import Resource
 from moviepiapi.utils import fill_return_packet, db
 from flask import request
+
 
 class CrewDetails(Resource):
     def get(self, crew_id):

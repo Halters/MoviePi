@@ -1,8 +1,8 @@
 ##
-## EPITECH PROJECT, 2019
-## MoviePi
-## File description:
-## Suggestions.py
+# EPITECH PROJECT, 2019
+# MoviePi
+# File description:
+# Suggestions.py
 ##
 
 from flask_restful import Resource
@@ -13,8 +13,10 @@ from flask import request
 #                               SUGGESTIONS                                   #
 #                    DOC : DOCUMENTATIONS/SUGGESTIONS.MD                      #
 ###############################################################################
+
+
 class Suggestions(Resource):
-    data_information = {'userInfos' : None, 'JWT' : ""}
+    data_information = {'userInfos': None, 'JWT': ""}
 
     def get(self):
         user_uuid = check_auth_token(request)
@@ -29,7 +31,8 @@ class Suggestions(Resource):
         user = userH.getUserInformations(user_uuid=uuid_binary)
         if not user:
             return fill_return_packet(0, "Compte inexistant", self.data_information)
-        result = db.request("SELECT fk_genres, weight from users_genres WHERE fk_users=%s", user['id'])
+        result = db.request(
+            "SELECT fk_genres, weight from users_genres WHERE fk_users=%s", user['id'])
         if not result:
             return fill_return_packet(0, "Pas de préférences pour cette utilisateur", self.data_information)
         for i in range(len(result)):
@@ -39,8 +42,9 @@ class Suggestions(Resource):
         for i in range(len(weight_list)):
             if weight_list[i] >= result:
                 tag_list.append(id_list[i])
-        for i in range (len(tag_list)):
-            list_str = list_str +  "LIKE('%%" + str(id_list[i]) + "%%')" + " and fk_genres "
+        for i in range(len(tag_list)):
+            list_str = list_str + \
+                "LIKE('%%" + str(id_list[i]) + "%%')" + " and fk_genres "
         list_str = list_str[:-14]
         cmd = "SELECT fk_films FROM films_genres WHERE fk_genres " + list_str
         result = db.request(cmd)
@@ -48,10 +52,10 @@ class Suggestions(Resource):
             temp_list.append(result[i]['fk_films'])
         list_str = ""
         print(temp_list)
-        for i in range (20) or len(temp_list):
+        for i in range(20) or len(temp_list):
             list_str = list_str + str(temp_list[i]) + ","
         list_str = list_str[:-7]
-        cmd = "SELECT * FROM films WHERE id IN(" + list_str +")"
+        cmd = "SELECT * FROM films WHERE id IN(" + list_str + ")"
         result = db.request(cmd)
         for i in range(len(result)):
             del result[i]['id_tmdb']
@@ -62,4 +66,3 @@ class Suggestions(Resource):
             if (result[i]['adult'] == 1 and int(isAdult[0]['age']) < 18):
                 del result[i]
         return fill_return_packet(1, "OK", result)
-        
