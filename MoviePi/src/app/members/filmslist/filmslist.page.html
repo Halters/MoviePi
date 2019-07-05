@@ -5,14 +5,25 @@
     </ion-buttons>
     <ion-title *ngIf="!searchOpen">Liste des films</ion-title>
 
-    <ion-select slot="end" *ngIf="searchOpen" interface="popover">
-      <ion-select-option value="f">Genre 1</ion-select-option>
-      <ion-select-option value="m">Genre 2</ion-select-option>
+    <ion-select
+      slot="end"
+      value="0"
+      *ngIf="searchOpen"
+      interface="popover"
+      #C
+      (ionChange)="onChangeGenre(C.value)"
+    >
+      <ion-select-option value="0">All</ion-select-option>
+      <ion-select-option *ngFor="let genre of genres" value="genre.id">
+        {{ genre.name }}</ion-select-option
+      >
     </ion-select>
     <ion-searchbar
+      [formControl]="searchControl"
+      (ionChange)="onSearchInput()"
       *ngIf="searchOpen"
       showCancelButton="true"
-      (ionCancel)="searchOpen = false"
+      (ionCancel)="cancelSearch()"
     >
     </ion-searchbar>
     <ion-buttons slot="end">
@@ -25,7 +36,7 @@
 
 <ion-content>
   <ion-card
-    *ngFor="let film of films"
+    *ngFor="let film of displayFilms"
     [routerLink]="['/members/filmdetails', film.id]"
     routerDirection="forward"
   >

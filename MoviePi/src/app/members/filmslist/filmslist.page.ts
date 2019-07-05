@@ -3,6 +3,12 @@ import { ApiResponse } from './../../interfaces/api-response';
 import { ApiRequestsService } from './../../services/api-requests.service';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { Film } from 'src/app/interfaces/film';
+import { NavController } from 'ionic-angular';
+
+import { FormControl } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
   selector: 'app-filmslist',
@@ -14,26 +20,48 @@ export class FilmslistPage implements OnInit {
   searchOpen = false;
   dropDown = false;
   films: Array<Film>;
+  displayFilms: Array<Film>;
+  genres: any = undefined;
+  searchTerm = '';
+  searchControl: FormControl;
+  searching: any = false;
   searchMode = false;
   actualPage = 0;
+  searchData = [];
   TMDB_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
   NO_IMAGE = 'assets/image-not-found.jpg';
 
   constructor(private apiRequests: ApiRequestsService) {
-    this.initializeFilmsSeen();
+    this.initializeFilms();
+    this.initializeGenres();
+    this.searchControl = new FormControl();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.setFilteredItems();
+    this.searchControl.valueChanges
+      .pipe(debounceTime(700))
+      .subscribe(search => {
+        this.setFilteredItems();
+      });
+  }
 
-  initializeFilmsSeen() {
+  initializeFilms() {
     this.apiRequests
       .getFilmsFromPage(this.actualPage)
       .subscribe(async (res: ApiResponse) => {
         if (res && res.data) {
           this.films = res.data;
+          this.displayFilms = this.films.slice(0);
           console.log(this.films);
         }
       });
+  }
+
+  initializeGenres() {
+    this.apiRequests.getGenres().subscribe(async (res: ApiResponse) => {
+      this.genres = res.data;
+    });
   }
 
   loadData(event) {
@@ -43,11 +71,57 @@ export class FilmslistPage implements OnInit {
         if (!rep.data) {
           this.infiniteScroll.disabled = true;
         } else {
-          this.films.push(rep.data);
           console.log(this.films);
+          this.films = this.films + rep.data;
+          console.log(this.films);
+          this.displayFilms = this.films.slice(0);
         }
         this.infiniteScroll.complete();
       }
+    });
+  }
+
+  onChangeGenre(value: number) {
+    this.actualPage = 0;
+    if (value === 0) {
+      this.initializeFilms();
+    }
+  }
+
+  cancelSearch() {
+    this.displayFilms = this.films.slice(0);
+  }
+
+  onSearchInput() {
+    this.searchTerm = this.searchControl.value;
+    this.setFilteredItems();
+    this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
+      this.setFilteredItems();
+    });
+  }
+
+  setFilteredItems() {
+    if (this.films) {
+      this.searchData = this.films.slice(0);
+      this.searchData = this.filterItems(this.searchTerm);
+      if (this.searchData.length !== 0) {
+        this.displayFilms = this.searchData.slice(0);
+      }
+      console.log(this.displayFilms);
+      console.log(this.films);
+    }
+  }
+
+  filterItems(searchTerm) {
+    const data = this.films.slice(0);
+    this.infiniteScroll.disabled = true;
+    if (!searchTerm) {
+      this.infiniteScroll.disabled = false;
+      this.displayFilms = this.films.slice(0);
+      return [];
+    }
+    return data.filter(film => {
+      return film.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
   }
 }
