@@ -14,6 +14,8 @@ class FilmsPage(Resource):
     filmsPerPage = 15
 
     def get(self, page):
+        if not page:
+            return fill_return_packet(0, "Un numéro de page est nécessaire", None)
         uuid = check_auth_token(request)
         if not uuid:
             return fill_return_packet(0, "Token Invalide", None)

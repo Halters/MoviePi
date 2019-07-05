@@ -12,6 +12,8 @@ from flask import request
 
 class UserComments(Resource):
     def get(self, film_id):
+        if not film_id:
+            return fill_return_packet(0, "Il manque un paramètre", None)
         result = db.request(
             "SELECT * FROM comments WHERE fk_films = %s", film_id)
         if not result:
@@ -26,6 +28,8 @@ class UserComments(Resource):
         return fill_return_packet(1, "OK", result)
 
     def post(self, film_id):
+        if not film_id:
+            return fill_return_packet(0, "Il manque un paramètre", None)
         uuid = check_auth_token(request)
         if not uuid:
             return fill_return_packet(0, "Token invalide", None)
@@ -52,6 +56,8 @@ class UserComments(Resource):
         return fill_return_packet(1, "OK", result)
 
     def patch(self, film_id):
+        if not film_id:
+            return fill_return_packet(0, "Il manque un paramètre", None)
         uuid = check_auth_token(request)
         if not uuid:
             return fill_return_packet(0, "Token invalide", None)
@@ -80,6 +86,8 @@ class UserComments(Resource):
         return fill_return_packet(1, "OK", result)
 
     def delete(self, film_id):
+        if not film_id:
+            return fill_return_packet(0, "Il manque un paramètre", None)
         uuid = check_auth_token(request)
         if not uuid:
             return fill_return_packet(0, "Token invalide", None)

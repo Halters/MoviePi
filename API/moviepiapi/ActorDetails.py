@@ -18,9 +18,9 @@ from flask import request
 class ActorDetails(Resource):
     def get(self, actor_id):
         if not actor_id:
-            return fill_return_packet(0, "KO", None)
-        cmd = "SELECT * from actors WHERE id=" + actor_id
-        result = db.request(cmd)
+            return fill_return_packet(0, "Acteur inconnu", None)
+        query = "SELECT * from actors WHERE id = %s"
+        result = db.request(query, actor_id)
         if not result:
             return fill_return_packet(0, "L'acteur n'existe pas", None)
         del result[0]['id_tmdb']
