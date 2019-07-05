@@ -8,13 +8,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let item of items">
+  <ion-card *ngFor="let film of filmsSeen">
     <ion-card-header>
-      <img [src]="item.src" />
+      <img [src]="film.src" />
     </ion-card-header>
 
     <ion-card-content>
-      {{ item.text }}
+      {{ film.text }}
     </ion-card-content>
   </ion-card>
 </ion-content>

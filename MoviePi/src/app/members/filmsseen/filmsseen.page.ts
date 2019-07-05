@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { IonInfiniteScroll } from '@ionic/angular';
+import { ApiRequestsService } from './../../services/api-requests.service';
+import { ApiResponse } from './../../interfaces/api-response';
 
 @Component({
   selector: 'app-filmsseen',
@@ -6,27 +9,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./filmsseen.page.scss']
 })
 export class FilmsseenPage implements OnInit {
-  public items: any[] = [
-    {
-      src:
-        'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-      text:
-        'This is content, without any paragraph or header tags, within an ion-card-content element.'
-    },
-    {
-      src:
-        'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-      text:
-        'This is content, without any paragraph or header tags, within an ion-card-content element.'
-    },
-    {
-      src:
-        'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-      text:
-        'This is content, without any paragraph or header tags, within an ion-card-content element.'
-    }
-  ];
-  constructor() {}
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  public filmsSeen: any = undefined;
+  constructor(private apiRequests: ApiRequestsService) {
+    this.initializeFilmsSeen();
+  }
 
   ngOnInit() {}
+
+  initializeFilmsSeen() {
+    this.apiRequests.getFilmsSeen().subscribe(async (res: ApiResponse) => {
+      this.filmsSeen = res.data;
+      console.log(this.filmsSeen);
+    });
+  }
 }

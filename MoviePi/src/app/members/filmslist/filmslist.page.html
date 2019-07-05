@@ -24,13 +24,22 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let item of items">
+  <ion-card
+    *ngFor="let film of films"
+    [routerLink]="['/members/filmdetails', film.id]"
+    routerDirection="forward"
+  >
     <ion-card-header>
-      <img [src]="item.src" />
+      <img
+        src="{{
+          film.image !== 'None' ? TMDB_IMAGE_URL + film.image : NO_IMAGE
+        }}"
+      />
+      <ion-card-title>{{ film.title }}</ion-card-title>
     </ion-card-header>
-
-    <ion-card-content>
-      {{ item.text }}
-    </ion-card-content>
   </ion-card>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loading-spinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
