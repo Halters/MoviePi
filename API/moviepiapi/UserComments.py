@@ -22,7 +22,7 @@ class UserComments(Resource):
             if not userInfos:
                 pass
             else:
-                comment["username"] = userInfos['username']
+                comment["username"] = userInfos[0]['username']
         return fill_return_packet(1, "OK", result)
 
     def post(self, film_id):
@@ -48,7 +48,7 @@ class UserComments(Resource):
             if not userInfos:
                 pass
             else:
-                comment["username"] = userInfos['username']
+                comment["username"] = userInfos[0]['username']
         return fill_return_packet(1, "OK", result)
 
     def patch(self, film_id):
