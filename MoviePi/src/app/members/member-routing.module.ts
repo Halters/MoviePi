@@ -22,6 +22,14 @@ const routes: Routes = [
   {
     path: 'filmsseen',
     loadChildren: './filmsseen/filmsseen.module#FilmsseenPageModule'
+  },
+  {
+    path: 'filmdetails/:id',
+    loadChildren: './filmdetails/filmdetails.module#FilmdetailsPageModule'
+  },
+  {
+    path: 'filmdetails',
+    loadChildren: './filmdetails/filmdetails.module#FilmdetailsPageModule'
   }
 ];
 

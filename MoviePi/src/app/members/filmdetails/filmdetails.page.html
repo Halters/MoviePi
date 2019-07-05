@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-img [src]="image"></ion-img>
+  <ion-list>
+    <ion-item lines="full">
+      <ion-label>Film vu</ion-label>
+      <ion-checkbox slot="start" [(ngModel)]="isChecked"></ion-checkbox>
+      <ion-icon
+        name="star"
+        *ngFor="let num of [1, 2, 3, 4, 5]"
+        (click)="rate(num)"
+        [ngStyle]="{ color: getColor(num) }"
+        slot="end"
+      ></ion-icon>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>Synopsis:</ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-text>{{ overview }}</ion-text>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-icon slot="start" name="calendar"></ion-icon>
+      <ion-label>Date de réalisation: {{ releaseDate }} </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
