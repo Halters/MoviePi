@@ -27,6 +27,8 @@ class UserFilmsSeen(Resource):
 
     def post(self):
         packet = request.json
+        if not packet or 'id' not in packet:
+            return fill_return_packet(0, "La requête est incorrecte", None)
         user_uuid = check_auth_token(request)
         if not user_uuid:
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
@@ -34,8 +36,8 @@ class UserFilmsSeen(Resource):
         userInfos = userH.getUserInformations(user_uuid=user_binary)
         if not userInfos:
             return fill_return_packet(0, "Pas de données sur cette utilisateur", None)
-        result = db.insert("INSERT INTO users_films (fk_users, fk_films) VALUES (%s, %s)", userInfos['id'], packet['id'])
+        result = db.insert(
+            "INSERT INTO users_films (fk_users, fk_films) VALUES (%s, %s)", userInfos['id'], packet['id'])
         if not result:
             return fill_return_packet(0, "KO", None)
         return fill_return_packet(1, "OK", None)
-        

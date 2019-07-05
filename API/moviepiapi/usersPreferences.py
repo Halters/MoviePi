@@ -22,11 +22,13 @@ class usersPreferences(Resource):
         if not user:
             return fill_return_packet(0, "Ce compte n'existe pas", None)
         packet = request.json
-        username = packet["username"] if packet["username"] else user["username"]
+        if not packet:
+            return fill_return_packet(0, "Aucune information à mettre à jour", None)
         password = userH.hashPassword(
             packet["password"]) if packet["password"] else None
         age = packet["age"] if packet["age"] else user["age"]
-        user = userH.updateUserInfos(user["id"], username, password, age)
+        user = userH.updateUserInfos(
+            user["id"], user["username"], password, age)
         if not user:
             return fill_return_packet(0, "Une erreur est survenue", None)
         self.data_informations["JWT"] = encode_auth_token(user["uuid"])

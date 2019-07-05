@@ -15,6 +15,9 @@ class User(Resource):
 
     def post(self):
         packet = request.json
+        if not packet or "userInfos" not in packet or "genres" not in packet:
+            return fill_return_packet(
+                0, "Echec à la création du compte", None)
         username = packet['userInfos']['username']
         password = packet['userInfos']['password']
         age = int(packet['userInfos']['age'])
