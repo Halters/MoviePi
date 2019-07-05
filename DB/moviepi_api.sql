@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Jeu 04 Juillet 2019 à 18:18
+-- Généré le :  Ven 05 Juillet 2019 à 05:29
 -- Version du serveur :  10.1.40-MariaDB-0ubuntu0.18.04.1
 -- Version de PHP :  7.3.6-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -25,6 +25,7 @@ USE `moviepi`;
 GRANT USAGE ON *.* TO 'moviepi_api'@'%' IDENTIFIED BY PASSWORD '*FE2730D818AC1EED0D879EDD90531EB8C02CBB67';
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON `moviepi`.* TO 'moviepi_api'@'%';
+
 
 -- --------------------------------------------------------
 
@@ -171,6 +172,19 @@ CREATE TABLE `users_genres` (
   `weight` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users_ratings`
+--
+
+CREATE TABLE `users_ratings` (
+  `id` int(11) NOT NULL,
+  `fk_users` int(11) NOT NULL,
+  `fk_films` int(11) NOT NULL,
+  `rating` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Index pour les tables exportées
 --
@@ -242,6 +256,12 @@ ALTER TABLE `users_genres`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `users_ratings`
+--
+ALTER TABLE `users_ratings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -249,7 +269,7 @@ ALTER TABLE `users_genres`
 -- AUTO_INCREMENT pour la table `actors`
 --
 ALTER TABLE `actors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16875;
 --
 -- AUTO_INCREMENT pour la table `comments`
 --
@@ -259,37 +279,37 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT pour la table `directors`
 --
 ALTER TABLE `directors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1378;
 --
 -- AUTO_INCREMENT pour la table `films`
 --
 ALTER TABLE `films`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=766;
 --
 -- AUTO_INCREMENT pour la table `films_casting`
 --
 ALTER TABLE `films_casting`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=758;
 --
 -- AUTO_INCREMENT pour la table `films_directors`
 --
 ALTER TABLE `films_directors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=761;
 --
 -- AUTO_INCREMENT pour la table `films_genres`
 --
 ALTER TABLE `films_genres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=766;
 --
 -- AUTO_INCREMENT pour la table `genres`
 --
 ALTER TABLE `genres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `users_films`
 --
@@ -299,6 +319,11 @@ ALTER TABLE `users_films`
 -- AUTO_INCREMENT pour la table `users_genres`
 --
 ALTER TABLE `users_genres`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT pour la table `users_ratings`
+--
+ALTER TABLE `users_ratings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
