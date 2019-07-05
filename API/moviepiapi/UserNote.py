@@ -46,7 +46,7 @@ class UserNote(Resource):
             "SELECT * FROM users_ratings WHERE fk_users=%s AND fk_films=%s", user['id'], film_id)
         if checker:
             db.request(
-                "UPDATE users_ratings SET rating=%s WHERE id=%s", note, checker["id"])
+                "UPDATE users_ratings SET rating=%s WHERE id=%s", note, checker[0]["id"])
         else:
             db.insert("INSERT INTO users_ratings (fk_users, fk_films, rating) VALUES (%s, %s, %s)",
                       user['id'], film_id, note)
