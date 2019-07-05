@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title *ngIf="!searchOpen">Liste des films</ion-title>
 
-    <!-- <ion-select
+    <ion-select
       slot="end"
       value="0"
       *ngIf="searchOpen"
@@ -17,7 +17,7 @@
       <ion-select-option *ngFor="let genre of genres" [value]="genre.id">
         {{ genre.name }}</ion-select-option
       >
-    </ion-select> -->
+    </ion-select>
     <ion-searchbar
       [formControl]="searchControl"
       (ionChange)="onSearchInput()"
