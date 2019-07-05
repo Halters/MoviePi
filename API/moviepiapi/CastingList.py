@@ -9,8 +9,11 @@ from flask_restful import Resource
 from moviepiapi.utils import fill_return_packet, db
 from flask import request
 
+###############################################################################
+#                               CASTING LIST                                  #
+#                    DOC : DOCUMENTATION/CASTINGLIST.MD                       #
+###############################################################################
 class CastingList(Resource):
-    
     def get(self, film_id):
         temp_str = ""
         list_str = ""

@@ -9,25 +9,38 @@
 import sys
 if __name__ == '__main__':
     sys.path.insert(0, '../')
+
+###############################################################################
+#                               IMPORT ROUTE                                  #
+###############################################################################
+from moviepiapi.ActorDetails import ActorDetails
+from moviepiapi.CastingList import CastingList
+from moviepiapi.CrewDetails import CrewDetails
+from moviepiapi.CrewList import CrewList
 from moviepiapi.Directors import Directors
 from moviepiapi.Actor import Actor
 from moviepiapi.Films import Films
+from moviepiapi.FilmsPage import FilmsPage
+from moviepiapi.Genres import Genres
 from moviepiapi.Suggestions import Suggestions
+from moviepiapi.User import User
+from moviepiapi.UserComments import UserComments
 from moviepiapi.UserFilmsSeen import UserFilmsSeen
 from moviepiapi.UserGenres import UserGenres
-from moviepiapi.Genres import Genres
-from moviepiapi.User import User
 from moviepiapi.Username import Username
 from moviepiapi.Users import Users
-from moviepiapi.FilmsPage import FilmsPage
-from moviepiapi.UserComments import UserComments
+from moviepiapi.usersPreferences import usersPreferences
+from moviepiapi.CrewList import CrewList
+from moviepiapi.CrewDetails import CrewDetails
+from moviepiapi.CastingList import CastingList
+from moviepiapi.ActorDetails import ActorDetails
+
+###############################################################################
+#                               IMPORT SYSTEM                                 #
+###############################################################################
 from flask_cors import CORS
 from flask_restful import Resource, Api
 from flask import Flask, request, jsonify
-from moviepiapi.CastingList import CastingList
-from moviepiapi.ActorDetails import ActorDetails
-from moviepiapi.CrewDetails import CrewDetails
-from moviepiapi.CrewList import CrewList
 
 
 app = Flask(__name__)
@@ -38,6 +51,16 @@ API_SUBURL = '/api'
 API_VERSION = '1'
 
 API_BASEURL = API_SUBURL + '/v' + API_VERSION + '/'
+
+
+###############################################################################
+#                               ROUTE                                         #
+###############################################################################
+api.add_resource(ActorDetails, API_BASEURL + 'actordetails/<actor_id>')
+api.add_resource(CastingList, API_BASEURL + 'castinglist/<film_id>')
+api.add_resource(CrewDetails, API_BASEURL + 'crewdetails/<crew_id>')
+api.add_resource(CrewList, API_BASEURL + 'crewlist/<film_id>')
+
 
 api.add_resource(Users, API_BASEURL + 'users')
 api.add_resource(Username, API_BASEURL + 'checkUsername/<username>')
@@ -51,6 +74,7 @@ api.add_resource(Genres, API_BASEURL + 'genres')
 api.add_resource(Suggestions, API_BASEURL + 'suggestions')
 api.add_resource(Films, API_BASEURL + 'films/<film_id>')
 api.add_resource(FilmsPage, API_BASEURL + 'films/page/<page>')
+<<<<<<< Updated upstream
 api.add_resource(Actor, API_BASEURL + 'actors')
 api.add_resource(Directors, API_BASEURL + 'directors')
 api.add_resource(UserComments, API_BASEURL + 'users/comment/<film_id>')
@@ -58,6 +82,9 @@ api.add_resource(CastingList, API_BASEURL + 'castinglist/<film_id>')
 api.add_resource(ActorDetails, API_BASEURL + 'actordetails/<actor_id>')
 api.add_resource(CrewList, API_BASEURL + 'crewlist/<film_id>')
 api.add_resource(CrewDetails, API_BASEURL + 'crewdetails/<crew_id>')
+=======
+api.add_resource(UserComments, API_BASEURL + 'users/comment/<film_id>')
+>>>>>>> Stashed changes
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')

@@ -9,6 +9,10 @@ from flask_restful import Resource
 from moviepiapi.utils import fill_return_packet, userH, encode_auth_token, check_auth_token, db, make_average_weight
 from flask import request
 
+###############################################################################
+#                               SUGGESTIONS                                   #
+#                    DOC : DOCUMENTATIONS/SUGGESTIONS.MD                      #
+###############################################################################
 class Suggestions(Resource):
     data_information = {'userInfos' : None, 'JWT' : ""}
 
@@ -51,5 +55,11 @@ class Suggestions(Resource):
         result = db.request(cmd)
         for i in range(len(result)):
             del result[i]['id_tmdb']
+        isAdult = db.request("SELECT age FROM users WHERE id=%s", user['age'])
+        if not isAdult:
+            return fill_return_packet(0, "Ce compte n'a pas d'age", None)
+        for i in range(len(result)):
+            if (result[i]['adult'] == 1 and int(isAdult[0]['age']) < 18):
+                del result[i]
         return fill_return_packet(1, "OK", result)
         
