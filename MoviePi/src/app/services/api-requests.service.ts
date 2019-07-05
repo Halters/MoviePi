@@ -34,6 +34,12 @@ export class ApiRequestsService {
     return this.httpClient.get<ApiResponse>(`${this.API_SERVER_ADDRESS}genres`);
   }
 
+  getFilmDetails(id: number): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}films/${id}`
+    );
+  }
+
   getFilmsFromPage(page: number): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(
       `${this.API_SERVER_ADDRESS}films/page/${page}`
@@ -43,6 +49,20 @@ export class ApiRequestsService {
   getFilmsSeen(): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(
       `${this.API_SERVER_ADDRESS}user/filmsSeen`
+    );
+  }
+
+  updateFilmsSeen(id: number): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}user/filmsSeen`,
+      { id }
+    );
+  }
+
+  updateRate(id: number, rate: number): Observable<ApiResponse> {
+    return this.httpClient.patch<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}usernote/${id}/${rate}`,
+      {}
     );
   }
 

@@ -100,7 +100,6 @@ export class RegisterPage implements OnInit {
   }
 
   save() {
-    console.log(this.accountInfos.controls.username.errors);
     this.attemptRegister = true;
     const genres = this.genres.filter(i => i.isChecked).map(i => i.id);
     if (

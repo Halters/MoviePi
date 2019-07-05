@@ -20,7 +20,6 @@ export class FilmsseenPage implements OnInit {
   initializeFilmsSeen() {
     this.apiRequests.getFilmsSeen().subscribe(async (res: ApiResponse) => {
       this.filmsSeen = res.data;
-      console.log(this.filmsSeen);
     });
   }
 }
