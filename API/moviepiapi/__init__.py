@@ -19,6 +19,7 @@ from moviepiapi.CrewDetails import CrewDetails
 from moviepiapi.CrewList import CrewList
 from moviepiapi.Films import Films
 from moviepiapi.FilmsPage import FilmsPage
+from moviepiapi.FilmsPageGenre import FilmsPageGenre
 from moviepiapi.Genres import Genres
 from moviepiapi.Suggestions import Suggestions
 from moviepiapi.User import User
@@ -63,6 +64,7 @@ api.add_resource(Genres, API_BASEURL + 'genres')
 api.add_resource(Suggestions, API_BASEURL + 'suggestions')
 api.add_resource(Films, API_BASEURL + 'films/<film_id>')
 api.add_resource(FilmsPage, API_BASEURL + 'films/page/<page>')
+api.add_resource(FilmsPageGenre, API_BASEURL + 'films/page/<page>/<genre>')
 api.add_resource(CastingList, API_BASEURL + 'castinglist/<film_id>')
 api.add_resource(ActorDetails, API_BASEURL + 'actordetails/<actor_id>')
 api.add_resource(CrewList, API_BASEURL + 'crewlist/<film_id>')
