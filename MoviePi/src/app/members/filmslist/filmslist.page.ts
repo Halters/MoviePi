@@ -19,7 +19,7 @@ export class FilmslistPage implements OnInit {
   dropDown = false;
   films: Array<Film>;
   displayFilms: Array<Film>;
-  genres: any = undefined;
+  // genres: any = undefined;
   searchTerm = '';
   searchControl: FormControl;
   searching: any = false;
@@ -31,7 +31,7 @@ export class FilmslistPage implements OnInit {
 
   constructor(private apiRequests: ApiRequestsService) {
     this.initializeFilms();
-    this.initializeGenres();
+    // this.initializeGenres();
     this.searchControl = new FormControl();
   }
 
@@ -55,11 +55,11 @@ export class FilmslistPage implements OnInit {
       });
   }
 
-  initializeGenres() {
-    this.apiRequests.getGenres().subscribe(async (res: ApiResponse) => {
-      this.genres = res.data;
-    });
-  }
+  // initializeGenres() {
+  //   this.apiRequests.getGenres().subscribe(async (res: ApiResponse) => {
+  //     this.genres = res.data;
+  //   });
+  // }
 
   loadData(event) {
     this.actualPage += 1;
@@ -76,19 +76,19 @@ export class FilmslistPage implements OnInit {
     });
   }
 
-  onChangeGenre(value: number) {
-    this.actualPage = 0;
-    if (value === 0) {
-      this.initializeFilms();
-    } else {
-      this.apiRequests.getFilmsFromPage(value).subscribe(rep => {
-        if (rep && rep.data) {
-          this.films = rep.data as Film[];
-          this.displayFilms = this.films.slice(0);
-        }
-      });
-    }
-  }
+  // onChangeGenre(value: number) {
+  //   this.actualPage = 0;
+  //   if (value === 0) {
+  //     this.initializeFilms();
+  //   } else {
+  //     this.apiRequests.getFilmsFromPage(value).subscribe(rep => {
+  //       if (rep && rep.data) {
+  //         this.films = rep.data as Film[];
+  //         this.displayFilms = this.films.slice(0);
+  //       }
+  //     });
+  //   }
+  // }
 
   cancelSearch() {
     this.displayFilms = this.films.slice(0);
