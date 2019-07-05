@@ -6,7 +6,6 @@ import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../interfaces/user';
 import { Platform } from '@ionic/angular';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 const TOKEN_KEY = 'ACCESS_TOKEN';
 
