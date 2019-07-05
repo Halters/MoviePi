@@ -37,7 +37,7 @@ class UserComments(Resource):
         if not userInfos:
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
         result = db.insert(
-            "INSERT INTO comments (fk_users, fk_films, comment) VALUES (%s, %s, %s)", film_id, userInfos["id"], packet["comment"])
+            "INSERT INTO comments (fk_users, fk_films, comment) VALUES (%s, %s, %s)", userInfos["id"], film_id, packet["comment"])
         if not result:
             return fill_return_packet(0, "Une erreur est survenue", None)
         result = db.request(
