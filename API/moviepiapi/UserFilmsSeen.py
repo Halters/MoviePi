@@ -16,7 +16,6 @@ class UserFilmsSeen(Resource):
 
     def get(self):
         user_uuid = check_auth_token(request)
-        user_uuid = "5c1b5841-b8cf-4bbb-ae87-fb6e87b88e21"
         if not user_uuid:
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
         user_binary = userH.getUUIDBinaryFromStr(user_uuid)

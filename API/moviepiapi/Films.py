@@ -1,13 +1,14 @@
 ##
-## EPITECH PROJECT, 2019
-## MoviePi
-## File description:
-## Films.py
+# EPITECH PROJECT, 2019
+# MoviePi
+# File description:
+# Films.py
 ##
 
 from flask_restful import Resource
-from moviepiapi.utils import fill_return_packet, Key, userH, encode_auth_token, check_auth_token, ret_packet, db, make_average_weight
+from moviepiapi.utils import fill_return_packet, db
 from flask import request
+
 
 class Films(Resource):
     def get(self, film_id):
