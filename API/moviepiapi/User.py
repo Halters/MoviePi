@@ -15,9 +15,9 @@ class User(Resource):
 
     def post(self):
         packet = request.json
-        username = packet['username']
-        password = packet['password']
-        age = int(packet['age'])
+        username = packet['userInfos']['username']
+        password = packet['userInfos']['password']
+        age = int(packet['userInfos']['age'])
         newUser = userH.createNewUser(username, password, age)
         if not newUser:
             return fill_return_packet(
