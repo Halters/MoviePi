@@ -9,6 +9,10 @@ from flask_restful import Resource
 from moviepiapi.utils import fill_return_packet, db
 from flask import request
 
+###############################################################################
+#                               FILMS                                         #
+#                    DOC : DOCUMENTATION/FILMS.MD                             #
+###############################################################################
 
 class Films(Resource):
     def get(self, film_id):
