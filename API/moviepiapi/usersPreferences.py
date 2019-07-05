@@ -20,7 +20,7 @@ class usersPreferences(Resource):
         uuid_binary = userH.getUUIDBinaryFromStr(uuid)
         user = userH.getUserInformations(user_uuid=uuid_binary)
         if not user:
-            return fill_return_packet(0, "Ce compte n'existe pas", self.data_informations)
+            return fill_return_packet(0, "Ce compte n'existe pas", None)
         packet = request.json
         username = packet["username"] if packet["username"] else user["username"]
         password = userH.hashPassword(
@@ -28,7 +28,7 @@ class usersPreferences(Resource):
         age = packet["age"] if packet["age"] else user["age"]
         user = userH.updateUserInfos(user["id"], username, password, age)
         if not user:
-            return fill_return_packet(1, "Une erreur est survenue", self.data_informations)
+            return fill_return_packet(1, "Une erreur est survenue", None)
         self.data_informations["JWT"] = encode_auth_token(user["id"])
         del user["id"]
         self.data_informations["userInfos"] = user
