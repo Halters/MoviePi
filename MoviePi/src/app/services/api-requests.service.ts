@@ -75,4 +75,30 @@ export class ApiRequestsService {
       packet
     );
   }
+
+  getComments(filmId: number): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}users/comment/${filmId}`
+    );
+  }
+
+  postComment(filmId: number, comment: string): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}users/comment/${filmId}`,
+      comment
+    );
+  }
+
+  deleteComment(commentId: number): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}users/comment/${commentId}`
+    );
+  }
+
+  updateComment(commentId: number, comment: string): Observable<ApiResponse> {
+    return this.httpClient.patch<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}users/comment/${commentId}`,
+      comment
+    );
+  }
 }
