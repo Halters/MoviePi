@@ -1,29 +1,45 @@
+import { Comments } from './../../interfaces/comments';
+import { User } from './../../interfaces/user';
 import { FilmDetails } from 'src/app/interfaces/film';
 import { ColorsStars } from './../../enums/colors-stars.enum';
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, AfterContentInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiRequestsService } from './../../services/api-requests.service';
 import { ApiResponse } from './../../interfaces/api-response';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-filmdetails',
   templateUrl: './filmdetails.page.html',
   styleUrls: ['./filmdetails.page.scss']
 })
-export class FilmdetailsPage implements OnInit {
-  filmDetails: FilmDetails;
+export class FilmdetailsPage implements AfterContentInit {
+  filmDetails: FilmDetails = undefined;
   id = null;
+  comments: Comments[];
   isChecked = false;
   disabled = false;
   filmsSeen;
   userRate = 0;
   TMDB_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
   NO_IMAGE = 'assets/image-not-found.jpg';
+  user: User;
+  submitCommentForm: FormGroup;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private apiRequests: ApiRequestsService
+    private apiRequests: ApiRequestsService,
+    private authService: AuthenticationService,
+    private formBuilder: FormBuilder
   ) {
+    this.submitCommentForm = this.formBuilder.group({
+      comment: ['', [Validators.required]]
+    });
+    this.user = this.authService.user;
+  }
+
+  ngAfterContentInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.apiRequests
       .getFilmDetails(this.id)
@@ -31,12 +47,11 @@ export class FilmdetailsPage implements OnInit {
         if (res && res.data) {
           this.filmDetails = res.data[0];
           this.filmDetails.rating = Math.round(this.filmDetails.rating / 2);
+          this.getComments();
           this.initializeFilmsSeen();
         }
       });
   }
-
-  ngOnInit() {}
 
   initializeFilmsSeen() {
     this.apiRequests.getFilmsSeen().subscribe(async (res: ApiResponse) => {
@@ -107,6 +122,46 @@ export class FilmdetailsPage implements OnInit {
         .updateFilmsSeen(this.id)
         .subscribe(async (res: ApiResponse) => {});
       this.disabled = true;
+    }
+  }
+
+  getComments() {
+    this.apiRequests
+      .getComments(this.filmDetails.id)
+      .subscribe(async (res: ApiResponse) => {
+        console.log(res);
+        if (res && res.data) {
+          this.comments = res.data as Comments[];
+        }
+      });
+    this.user = this.authService.user;
+  }
+
+  delete(commentId: number) {
+    this.apiRequests
+      .deleteComment(commentId)
+      .subscribe(async (res: ApiResponse) => {
+        if (res && res.data) {
+          this.comments = res.data as Comments[];
+        }
+      });
+  }
+
+  edit() {}
+
+  save() {
+    if (this.submitCommentForm.valid) {
+      this.apiRequests
+        .postComment(
+          this.filmDetails.id,
+          this.submitCommentForm.get('comment').value
+        )
+        .subscribe(async (res: ApiResponse) => {
+          if (res && res.data) {
+            this.comments = res.data as Comments[];
+            this.submitCommentForm.get('comment').setValue('');
+          }
+        });
     }
   }
 }

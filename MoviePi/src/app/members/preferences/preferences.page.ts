@@ -69,4 +69,8 @@ export class PreferencesPage {
     }
     this.router.navigate(['members', 'home']);
   }
+
+  logout() {
+    this.authService.logout();
+  }
 }

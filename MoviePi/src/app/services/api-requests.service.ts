@@ -105,7 +105,7 @@ export class ApiRequestsService {
   postComment(filmId: number, comment: string): Observable<ApiResponse> {
     return this.httpClient.post<ApiResponse>(
       `${this.API_SERVER_ADDRESS}users/comment/${filmId}`,
-      comment
+      { comment }
     );
   }
 
@@ -118,7 +118,7 @@ export class ApiRequestsService {
   updateComment(commentId: number, comment: string): Observable<ApiResponse> {
     return this.httpClient.patch<ApiResponse>(
       `${this.API_SERVER_ADDRESS}users/comment/${commentId}`,
-      comment
+      { comment }
     );
   }
 
