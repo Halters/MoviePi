@@ -21,7 +21,7 @@ class Users(Resource):
         user = userH.getUserInformations(user_uuid=uuid_binary)
         if not user:
             return fill_return_packet(
-                0, "Ce compte n'existe pas", self.data_information)
+                0, "Ce compte n'existe pas", None)
         user['genres'] = userH.getUserGenres(user['id'])
         user['uuid'] = uuid
         del user['id']
@@ -36,7 +36,7 @@ class Users(Resource):
         user = userH.getUserForAuth(username, password)
         if not user:
             return fill_return_packet(
-                0, "Ce compte n'existe pas", self.data_information)
+                0, "Ce compte n'existe pas", None)
         user['genres'] = userH.getUserGenres(user['id'])
         user['uuid'] = userH.getUUIDstrFromBinary(user['uuid'])
         del user['id']
