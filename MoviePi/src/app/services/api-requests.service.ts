@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiRequestsService {
-  private API_SERVER_ADDRESS = 'http://127.0.0.1:4242/api/v1/';
+  private API_SERVER_ADDRESS = 'http://51.75.141.254/api/v1/';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -27,13 +27,23 @@ export class ApiRequestsService {
   }
 
   reauth(): Observable<ApiResponse> {
-    return this.httpClient.get<ApiResponse>(
-      `${this.API_SERVER_ADDRESS}user/reauth`
-    );
+    return this.httpClient.get<ApiResponse>(`${this.API_SERVER_ADDRESS}users`);
   }
 
   getGenres(): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(`${this.API_SERVER_ADDRESS}genres`);
+  }
+
+  getFilmsFromPage(page: number): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}films/page/${page}`
+    );
+  }
+
+  getFilmsSeen(): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}user/filmsSeen`
+    );
   }
 
   checkUsername(username: string): Observable<ApiResponse> {
