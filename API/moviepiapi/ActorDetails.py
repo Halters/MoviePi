@@ -1,13 +1,19 @@
 ##
-## EPITECH PROJECT, 2019
-## MoviePi
-## File description:
-## ActorDetails.py
+# EPITECH PROJECT, 2019
+# MoviePi
+# File description:
+# ActorDetails.py
 ##
 
 from flask_restful import Resource
 from moviepiapi.utils import fill_return_packet, db
 from flask import request
+
+###############################################################################
+#                               ACTOR DETAILS                                 #
+#                    DOC : DOCUMENTATION/ACTORDETAILS.MD                      #
+###############################################################################
+
 
 class ActorDetails(Resource):
     def get(self, actor_id):

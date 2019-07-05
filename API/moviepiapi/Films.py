@@ -15,4 +15,4 @@ class Films(Resource):
         result = db.request("SELECT * from films where id=%s", film_id)
         if not result:
             return fill_return_packet(0, "Pas de film trouvé a l'id demandé", None)
-        return result
+        return fill_return_packet(1, "OK", result)

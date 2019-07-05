@@ -18,4 +18,4 @@ class UserGenres(Resource):
         if not userInfos:
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
         genres = userH.getUserGenres(userInfos['id'])
-        return fill_return_packet(0, None, genres)
+        return fill_return_packet(1, "OK", genres)

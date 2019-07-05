@@ -29,4 +29,4 @@ class FilmsPage(Resource):
                 "SELECT id, title, release_date, image from films LIMIT %s, %s", start, numberPage)
         if not result:
             return fill_return_packet(0, "Pas de film trouvé a l'id demandé", None)
-        return result
+        return fill_return_packet(1, "OK", result)
