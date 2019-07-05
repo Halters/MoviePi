@@ -130,7 +130,7 @@ export class ApiRequestsService {
 
   getActivityThread(): Observable<ApiResponse> {
     return this.httpClient.get<ApiResponse>(
-      `${this.API_SERVER_ADDRESS}activitythread/`
+      `${this.API_SERVER_ADDRESS}activitythread`
     );
   }
 }

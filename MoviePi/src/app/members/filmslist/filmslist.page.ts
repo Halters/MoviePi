@@ -68,7 +68,7 @@ export class FilmslistPage implements OnInit {
         if (!rep.data) {
           this.infiniteScroll.disabled = true;
         } else {
-          this.films = this.films + rep.data;
+          this.films = this.films.concat(rep.data);
           this.displayFilms = this.films.slice(0);
         }
         this.infiniteScroll.complete();

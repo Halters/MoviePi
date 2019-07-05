@@ -43,7 +43,9 @@
     <ion-card-header>
       <img
         src="{{
-          film.image !== 'None' ? TMDB_IMAGE_URL + film.image : NO_IMAGE
+          film.image !== 'None' && film.image !== undefined
+            ? TMDB_IMAGE_URL + film.image
+            : NO_IMAGE
         }}"
       />
       <ion-card-title>{{ film.title }}</ion-card-title>

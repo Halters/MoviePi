@@ -36,14 +36,6 @@ export class FilmdetailsPage implements AfterContentInit {
     this.submitCommentForm = this.formBuilder.group({
       comment: ['', [Validators.required]]
     });
-    this.user = this.authService.user;
-    this.apiRequests
-      .getRateUser(this.id)
-      .subscribe(async (res: ApiResponse) => {
-        if (res && res.data) {
-          this.userRate = res.data.rating;
-        }
-      });
   }
 
   ngAfterContentInit() {
@@ -56,6 +48,14 @@ export class FilmdetailsPage implements AfterContentInit {
           this.filmDetails.rating = Math.round(this.filmDetails.rating / 2);
           this.getComments();
           this.initializeFilmsSeen();
+        }
+      });
+    this.user = this.authService.user;
+    this.apiRequests
+      .getRateUser(this.id)
+      .subscribe(async (res: ApiResponse) => {
+        if (res && res.data) {
+          this.userRate = res.data[0].rating;
         }
       });
   }
