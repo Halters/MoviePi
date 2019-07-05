@@ -69,8 +69,12 @@ api.add_resource(ActorDetails, API_BASEURL + 'actordetails/<actor_id>')
 api.add_resource(CrewList, API_BASEURL + 'crewlist/<film_id>')
 api.add_resource(CrewDetails, API_BASEURL + 'crewdetails/<crew_id>')
 api.add_resource(UserComments, API_BASEURL + 'users/comment/<film_id>')
+<<<<<<< HEAD
 api.add_resource(UserNote, API_BASEURL +'usernote/<film_id> <note>')
 api.add_resource(ActivityThread, API_BASEURL + 'activitythread/')
+=======
+api.add_resource(UserNote, API_BASEURL + 'usernote/<film_id>/<note>')
+>>>>>>> API
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='4242')
