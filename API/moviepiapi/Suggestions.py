@@ -8,6 +8,7 @@
 from flask_restful import Resource
 from moviepiapi.utils import fill_return_packet, userH, encode_auth_token, check_auth_token, db, make_average_weight
 from flask import request
+import random
 
 ###############################################################################
 #                               SUGGESTIONS                                   #
@@ -25,6 +26,9 @@ class Suggestions(Resource):
         tag_list = []
         temp_list = []
         list_str = ""
+        to_select = ""
+        list_suggestions = []
+        good_suggestions = ""
         if not user_uuid:
             return fill_return_packet(0, "Invalid Token", None)
         uuid_binary = userH.getUUIDBinaryFromStr(user_uuid)
@@ -38,30 +42,25 @@ class Suggestions(Resource):
         for i in range(len(result)):
             id_list.append(result[i]['fk_genres'])
             weight_list.append(result[i]['weight'])
-        result = make_average_weight(weight_list)
+        average = make_average_weight(weight_list)
         for i in range(len(weight_list)):
-            if weight_list[i] >= result:
+            if weight_list[i] >= average:
                 tag_list.append(id_list[i])
-        for i in range(len(tag_list)):
-            list_str = list_str + \
-                "LIKE('%%" + str(id_list[i]) + "%%')" + " and fk_genres "
-        list_str = list_str[:-14]
-        cmd = "SELECT fk_films FROM films_genres WHERE fk_genres " + list_str
+        print(tag_list)
+        to_select = "'%%" + str(tag_list[0]) + "%%'"
+        cmd = "SELECT fk_films FROM films_genres WHERE fk_genres LIKE " +  to_select
         result = db.request(cmd)
-        for i in range(len(result)):
-            temp_list.append(result[i]['fk_films'])
-        list_str = ""
-        print(temp_list)
-        for i in range(20) or len(temp_list):
-            list_str = list_str + str(temp_list[i]) + ","
-        list_str = list_str[:-7]
-        cmd = "SELECT * FROM films WHERE id IN(" + list_str + ")"
-        result = db.request(cmd)
+        for i in range(10):
+            selected = random.randint(1,len(result))
+            list_suggestions.append(result[selected])
+        
+        for i in range(len(list_suggestions)):
+            good_suggestions = good_suggestions + str(list_suggestions[i]['fk_films']) + ","
+        good_suggestions = good_suggestions[:-1]
+        result = db.request("SELECT * from films WHERE id IN(" + good_suggestions +")")
+        if not result:
+            return fill_return_packet(0, "Aucune propositions trouvées", None)
         for i in range(len(result)):
             del result[i]['id_tmdb']
-        if not user['age']:
-            return fill_return_packet(0, "Ce compte n'a pas d'age", None)
-        for i in range(len(result)):
-            if (result[i]['adult'] == 1 and int(isAdult[0]['age']) < 18):
-                del result[i]
         return fill_return_packet(1, "OK", result)
+        
