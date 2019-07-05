@@ -101,4 +101,10 @@ export class ApiRequestsService {
       comment
     );
   }
+
+  getActivityThread(): Observable<ApiResponse> {
+    return this.httpClient.get<ApiResponse>(
+      `${this.API_SERVER_ADDRESS}activitythread/`
+    );
+  }
 }
