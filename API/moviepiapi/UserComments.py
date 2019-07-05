@@ -51,7 +51,7 @@ class UserComments(Resource):
                 comment["fk_users"] = userInfos['username']
         return fill_return_packet(1, "OK", result)
 
-    def update(self, film_id):
+    def patch(self, film_id):
         uuid = check_auth_token(request)
         if not uuid:
             return fill_return_packet(0, "Token invalide", None)

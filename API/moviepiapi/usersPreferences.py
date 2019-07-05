@@ -13,7 +13,7 @@ from flask import request
 class usersPreferences(Resource):
     data_informations = {'userInfos': None, "JWT": ""}
 
-    def post(self):
+    def patch(self):
         uuid = check_auth_token(request)
         if not uuid:
             return fill_return_packet(0, "Token Invalide", None)
