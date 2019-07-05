@@ -19,9 +19,3 @@ class UserGenres(Resource):
             return fill_return_packet(0, "Cet utilisateur n'existe pas", None)
         genres = userH.getUserGenres(userInfos['id'])
         return fill_return_packet(0, None, genres)
-
-    def post(self):
-        packet = request.json
-        # newGenres = packet["genres"]
-        # userH.setUserGenres(0, newGenres)
-        # return fill_return_packet(0, None, userH.getUserGenres(0))
