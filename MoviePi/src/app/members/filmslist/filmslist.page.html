@@ -14,7 +14,7 @@
       (ionChange)="onChangeGenre(C.value)"
     >
       <ion-select-option value="0">All</ion-select-option>
-      <ion-select-option *ngFor="let genre of genres" value="genre.id">
+      <ion-select-option *ngFor="let genre of genres" [value]="genre.id">
         {{ genre.name }}</ion-select-option
       >
     </ion-select>
