@@ -101,4 +101,5 @@ def adjust_weight_user(film_id, note, id_user):
         else:
             db.insert("INSERT INTO users_genres (fk_users, fk_genres, weight) VALUES (%s, %s, %s)",
                       id_user, final_list[i], new_weight[i])
+    print("CA MARCHE")
     return True
