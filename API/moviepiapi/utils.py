@@ -90,7 +90,7 @@ def adjust_weight_user(film_id, note, id_user):
         for y in range(len(result)):
             if final_list[i] == result_user[y]['fk_genres']:
                 new_weight.append(
-                    (int(result_user[i]['weight']) / len(final_list)) * int(note))
+                    (int(result_user[y]['weight']) / len(final_list)) * int(note))
             else:
                 new_weight.append(1)
     for i in range(len(new_weight)):
