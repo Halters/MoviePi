@@ -22,7 +22,7 @@ class UserComments(Resource):
             if not userInfos:
                 pass
             else:
-                comment["fk_users"] = userInfos['username']
+                comment["username"] = userInfos['username']
         return fill_return_packet(1, "OK", result)
 
     def post(self, film_id):
@@ -48,7 +48,7 @@ class UserComments(Resource):
             if not userInfos:
                 pass
             else:
-                comment["fk_users"] = userInfos['username']
+                comment["username"] = userInfos['username']
         return fill_return_packet(1, "OK", result)
 
     def patch(self, film_id):
@@ -76,7 +76,7 @@ class UserComments(Resource):
             if not userInfos:
                 pass
             else:
-                comment["fk_users"] = userInfos['username']
+                comment["username"] = userInfos['username']
         return fill_return_packet(1, "OK", result)
 
     def delete(self, film_id):
@@ -99,5 +99,5 @@ class UserComments(Resource):
             if not userInfos:
                 pass
             else:
-                comment["fk_users"] = userInfos['username']
+                comment["username"] = userInfos['username']
         return fill_return_packet(1, "OK", result)
