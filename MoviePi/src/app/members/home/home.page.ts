@@ -1,3 +1,6 @@
+import { Film } from 'src/app/interfaces/film';
+import { ApiResponse } from './../../interfaces/api-response';
+import { ApiRequestsService } from 'src/app/services/api-requests.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,25 +9,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.page.scss']
 })
 export class HomePage {
-  public items: any[] = [
-    {
-      src:
-        'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-      text:
-        'This is content, without any paragraph or header tags, within an ion-card-content element.'
-    },
-    {
-      src:
-        'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-      text:
-        'This is content, without any paragraph or header tags, within an ion-card-content element.'
-    },
-    {
-      src:
-        'https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y',
-      text:
-        'This is content, without any paragraph or header tags, within an ion-card-content element.'
-    }
-  ];
-  constructor() {}
+  films: Array<Film>;
+  TMDB_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+  NO_IMAGE = 'assets/image-not-found.jpg';
+  maxPage: number;
+
+  constructor(private apiRequests: ApiRequestsService) {
+    this.apiRequests.getActivityThread().subscribe(async (res: ApiResponse) => {
+      if (res && res.data) {
+        this.maxPage = res.data;
+        this.getFilms();
+      }
+    });
+  }
+
+  getFilms() {
+    this.apiRequests
+      .getFilmsFromPage(Math.floor(Math.random() * this.maxPage))
+      .subscribe(async (res: ApiResponse) => {
+        if (res && res.data) {
+          this.films = res.data as Film[];
+        }
+      });
+  }
 }

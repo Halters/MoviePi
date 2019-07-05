@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { Film } from 'src/app/interfaces/film';
+import { Component, OnInit } from '@angular/core';
 import { ApiRequestsService } from './../../services/api-requests.service';
 import { ApiResponse } from './../../interfaces/api-response';
 
@@ -9,8 +9,10 @@ import { ApiResponse } from './../../interfaces/api-response';
   styleUrls: ['./filmsseen.page.scss']
 })
 export class FilmsseenPage implements OnInit {
-  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  public filmsSeen: any = undefined;
+  films: Array<Film>;
+  TMDB_IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+  NO_IMAGE = 'assets/image-not-found.jpg';
+
   constructor(private apiRequests: ApiRequestsService) {
     this.initializeFilmsSeen();
   }
@@ -19,7 +21,9 @@ export class FilmsseenPage implements OnInit {
 
   initializeFilmsSeen() {
     this.apiRequests.getFilmsSeen().subscribe(async (res: ApiResponse) => {
-      this.filmsSeen = res.data;
+      if (res && res.data) {
+        this.films = res.data;
+      }
     });
   }
 }
