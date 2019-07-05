@@ -11,6 +11,8 @@ from flask import request
 
 
 class FilmsPage(Resource):
+    filmsPerPage = 15
+
     def get(self, page):
         uuid = check_auth_token(request)
         if not uuid:
@@ -19,14 +21,13 @@ class FilmsPage(Resource):
         user = userH.getUserInformations(user_uuid=uuid_binary)
         if not user:
             return fill_return_packet(0, "Ce compte n'existe pas", None)
-        numberPage = 15
-        start = int(page) * numberPage
+        start = int(page) * self.filmsPerPage
         if user["age"] < 18:
             result = db.request(
-                "SELECT id, title, release_date, image from films LIMIT %s, %s WHERE adult = 1", start, numberPage)
+                "SELECT id, title, release_date, image from films LIMIT %s, %s WHERE adult = 0", start, self.filmsPerPage)
         else:
             result = db.request(
-                "SELECT id, title, release_date, image from films LIMIT %s, %s", start, numberPage)
+                "SELECT id, title, release_date, image from films LIMIT %s, %s", start, self.filmsPerPage)
         if not result:
             return fill_return_packet(0, "Pas de film trouvé a l'id demandé", None)
         return fill_return_packet(1, "OK", result)
