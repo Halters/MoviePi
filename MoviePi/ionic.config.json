@@ -1,0 +1,7 @@
+{
+  "name": "MoviePi",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

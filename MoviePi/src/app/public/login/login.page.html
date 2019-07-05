@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Connexion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="loginForm">
+    <ion-item>
+      <ion-label position="floating">Nom d'utilisateur</ion-label>
+      <ion-input formControlName="username" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Mot de passe</ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="invalidLogin">
+      <p>
+        <ion-text color="danger">Les informations sont invalides</ion-text>
+      </p>
+    </ion-item>
+  </form>
+  <ion-button (click)="login()" expand="block">Connexion</ion-button>
+  <ion-button
+    color="secondary"
+    routerLink="/register"
+    routerDirection="forward"
+  >
+    S'enregistrer
+  </ion-button>
+</ion-content>

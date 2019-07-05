@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" *ngIf="!searchOpen">
+      <ion-menu-button> </ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="!searchOpen">Liste des films</ion-title>
+
+    <ion-select
+      slot="end"
+      value="0"
+      *ngIf="searchOpen"
+      interface="popover"
+      #C
+      (ionChange)="onChangeGenre(C.value)"
+    >
+      <ion-select-option value="0">All</ion-select-option>
+      <ion-select-option *ngFor="let genre of genres" [value]="genre.id">
+        {{ genre.name }}</ion-select-option
+      >
+    </ion-select>
+    <ion-searchbar
+      [formControl]="searchControl"
+      (ionChange)="onSearchInput()"
+      *ngIf="searchOpen"
+      showCancelButton="true"
+      (ionCancel)="cancelSearch()"
+    >
+    </ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!searchOpen" (click)="searchOpen = true">
+        <ion-icon name="search" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card
+    *ngFor="let film of displayFilms"
+    [routerLink]="['/members/filmdetails', film.id]"
+    routerDirection="forward"
+  >
+    <ion-card-header>
+      <img
+        src="{{
+          film.image !== 'None' ? TMDB_IMAGE_URL + film.image : NO_IMAGE
+        }}"
+      />
+      <ion-card-title>{{ film.title }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loading-spinner="bubbles">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

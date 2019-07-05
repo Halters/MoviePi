@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button> </ion-menu-button>
+    </ion-buttons>
+    <ion-title>Films vus</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card
+    *ngFor="let film of films"
+    [routerLink]="['/members/filmdetails', film.id]"
+    routerDirection="forward"
+  >
+    <ion-card-header>
+      <img
+        src="{{
+          film.image !== 'None' ? TMDB_IMAGE_URL + film.image : NO_IMAGE
+        }}"
+      />
+      <ion-card-title>{{ film.title }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-content>
